@@ -1,0 +1,2288 @@
+# 📚 **PROYECTO: Sistema de Gestión de Biblioteca Digital**
+## **Duración: 2 Semanas**
+
+---
+
+## **📋 DESCRIPCIÓN DEL PROYECTO**
+
+### **Contexto**
+Eres el desarrollador de una biblioteca digital que necesita un sistema básico para gestionar su catálogo de libros. La biblioteca quiere digitalizar su proceso de administración con una aplicación web simple pero funcional.
+
+### **Objetivo**
+Desarrollar una aplicación web full-stack que permita a los bibliotecarios gestionar libros de manera eficiente mediante operaciones CRUD (Crear, Leer, Actualizar, Eliminar).
+
+---
+
+## **🎯 FUNCIONALIDADES PRINCIPALES**
+
+### **Operaciones CRUD Completas**
+- ✅ **Crear** nuevos libros en el catálogo
+- ✅ **Leer** y visualizar todos los libros en una tabla
+- ✅ **Actualizar** información de libros existentes
+- ✅ **Eliminar** libros del catálogo
+- ✅ **Buscar** libros por título
+
+### **Estructura de Datos del Libro**
+Cada libro en el sistema tendrá:
+- **Título** (texto): Nombre del libro
+- **Autor** (texto): Nombre del autor
+- **Género** (texto): Categoría literaria (Ficción, No-ficción, Ciencia, Historia, etc.)
+- **Año** (número): Año de publicación
+- **ISBN** (texto): Código único del libro
+- **Estado** (texto): Disponible, Prestado, En reparación
+
+---
+
+## **🛠️ TECNOLOGÍAS A UTILIZAR**
+
+### **Backend**
+- **Node.js** + **Express.js**
+- **MySQL** como base de datos
+- **CORS** para comunicación con frontend
+- **dotenv** para variables de entorno
+
+### **Frontend**
+- **React.js** con hooks (useState, useEffect)
+- **Axios** para peticiones HTTP
+- **CSS** para estilos
+
+### **Base de Datos**
+- **MySQL** con tabla `libros`
+
+### **Business Intelligence (BI)**
+- **Power BI Desktop** (recomendado) o **Tableau Public**
+- **Conexión directa** a MySQL
+- **Dashboard básico** con visualizaciones
+
+---
+
+## **🗄️ ESTRUCTURA DE LA BASE DE DATOS**
+
+```sql
+CREATE DATABASE biblioteca_digital;
+
+USE biblioteca_digital;
+
+CREATE TABLE libros (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(255) NOT NULL,
+    autor VARCHAR(255) NOT NULL,
+    genero VARCHAR(100) NOT NULL,
+    año INT NOT NULL,
+    isbn VARCHAR(20) UNIQUE NOT NULL,
+    estado VARCHAR(50) DEFAULT 'Disponible',
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### **Datos de Prueba**
+```sql
+INSERT INTO libros (titulo, autor, genero, año, isbn, estado) VALUES
+('Cien años de soledad', 'Gabriel García Márquez', 'Ficción', 1967, '978-84-376-0494-7', 'Disponible'),
+('1984', 'George Orwell', 'Ficción', 1949, '978-0-452-28423-4', 'Disponible'),
+('El Principito', 'Antoine de Saint-Exupéry', 'Ficción', 1943, '978-3-15-000000-0', 'Prestado'),
+('Don Quijote', 'Miguel de Cervantes', 'Ficción', 1605, '978-84-376-0000-0', 'Disponible'),
+('El Señor de los Anillos', 'J.R.R. Tolkien', 'Fantasía', 1954, '978-0-547-92822-7', 'Disponible');
+```
+
+---
+
+## **📊 CONEXIÓN CON HERRAMIENTA BI**
+
+### **Objetivo BI**
+Crear un dashboard básico que permita visualizar estadísticas de la biblioteca digital para tomar decisiones informadas.
+
+### **Herramientas Recomendadas**
+- **Power BI Desktop** (Gratuito, fácil de usar)
+- **Tableau Public** (Alternativa gratuita)
+- **Grafana** (Para desarrolladores avanzados)
+
+### **Visualizaciones Requeridas**
+1. **Gráfico de Barras**: Libros por género
+2. **Gráfico Circular**: Distribución por estado (Disponible, Prestado, etc.)
+3. **Gráfico de Líneas**: Libros registrados por año de publicación
+4. **Tabla**: Top 5 autores con más libros
+5. **Métrica**: Total de libros en el catálogo
+
+### **Pasos para Conexión BI**
+
+#### **Power BI Desktop**
+1. Abrir Power BI Desktop
+2. Seleccionar "Obtener datos" → "Base de datos" → "Base de datos MySQL"
+3. Configurar conexión:
+   - Servidor: `localhost`
+   - Base de datos: `biblioteca_digital`
+   - Usuario y contraseña de MySQL
+4. Seleccionar tabla `libros`
+5. Crear visualizaciones requeridas
+
+#### **Tableau Public**
+1. Abrir Tableau Public
+2. Conectar a "MySQL"
+3. Configurar servidor y credenciales
+4. Arrastrar campos a las áreas de visualización
+
+### **Dashboard Mínimo Requerido**
+- **Página 1**: Resumen general con métricas principales
+- **Página 2**: Análisis por género y autor
+- **Página 3**: Tendencias temporales
+
+---
+
+## **🔌 ENDPOINTS DE LA API**
+
+### **Rutas del Backend**
+- `GET /api/libros` - Obtener todos los libros
+- `POST /api/libros` - Crear un nuevo libro
+- `PUT /api/libros/:id` - Actualizar un libro existente
+- `DELETE /api/libros/:id` - Eliminar un libro
+- `GET /api/libros/buscar?titulo=termino` - Buscar libros por título
+
+### **Ejemplo de Respuesta API**
+```json
+{
+  "id": 1,
+  "titulo": "Cien años de soledad",
+  "autor": "Gabriel García Márquez",
+  "genero": "Ficción",
+  "año": 1967,
+  "isbn": "978-84-376-0494-7",
+  "estado": "Disponible"
+}
+```
+
+---
+
+## **📅 PLAN DE TRABAJO DETALLADO**
+
+### **SEMANA 1: BACKEND Y BASE DE DATOS**
+
+#### **Día 1-2: Configuración Inicial**
+- [ ] Crear estructura del proyecto
+- [ ] Configurar base de datos MySQL
+- [ ] Instalar dependencias necesarias
+- [ ] Configurar archivo `.env` para variables de entorno
+
+#### **Día 3-4: Desarrollo de API**
+- [ ] Crear conexión a base de datos (`db.js`)
+- [ ] Implementar endpoint GET `/api/libros`
+- [ ] Implementar endpoint POST `/api/libros`
+- [ ] Implementar endpoint PUT `/api/libros/:id`
+- [ ] Implementar endpoint DELETE `/api/libros/:id`
+- [ ] Implementar endpoint de búsqueda
+
+#### **Día 5: Testing, BI y Refinamiento**
+- [ ] Testing de todos los endpoints con Postman
+- [ ] Implementar validaciones de datos
+- [ ] Manejo de errores
+- [ ] **Configurar conexión con herramienta BI**
+- [ ] **Crear dashboard básico con visualizaciones**
+- [ ] Documentación básica de la API
+
+### **SEMANA 2: FRONTEND Y INTEGRACIÓN**
+
+#### **Día 1-2: Estructura React**
+- [ ] Crear aplicación React
+- [ ] Configurar componentes principales
+- [ ] Implementar estado con useState
+- [ ] Configurar useEffect para cargar datos
+
+#### **Día 3-4: Funcionalidades CRUD**
+- [ ] Crear formulario para agregar libros
+- [ ] Implementar tabla para mostrar libros
+- [ ] Funcionalidad de edición
+- [ ] Funcionalidad de eliminación
+- [ ] Implementar búsqueda básica
+
+#### **Día 5: Pulimiento y Testing**
+- [ ] Aplicar estilos CSS
+- [ ] Testing de integración completa
+- [ ] Optimización de código
+- [ ] Preparación de presentación
+
+---
+
+## **📁 ESTRUCTURA DEL PROYECTO**
+
+```
+biblioteca-digital/
+├── server/
+│   ├── package.json
+│   ├── index.js
+│   ├── db.js
+│   └── .env
+├── client/
+│   ├── package.json
+│   ├── public/
+│   └── src/
+│       ├── App.js
+│       ├── App.css
+│       └── index.js
+└── README.md
+```
+
+---
+
+## **✅ CRITERIOS DE EVALUACIÓN**
+
+### **Funcionalidad (35%)**
+- [ ] Todas las operaciones CRUD funcionan correctamente
+- [ ] La búsqueda por título funciona
+- [ ] No hay errores en la consola
+- [ ] La aplicación es estable
+
+### **Business Intelligence (15%)**
+- [ ] Conexión exitosa con herramienta BI
+- [ ] Dashboard creado con visualizaciones requeridas
+- [ ] Datos se actualizan correctamente en BI
+- [ ] Presentación del dashboard incluida
+
+### **Código (30%)**
+- [ ] Código limpio y bien comentado
+- [ ] Estructura de archivos organizada
+- [ ] Uso correcto de hooks de React
+- [ ] Manejo adecuado de errores
+
+### **Interfaz (20%)**
+- [ ] Diseño limpio y funcional
+- [ ] Formularios intuitivos
+- [ ] Tabla bien organizada
+- [ ] Responsive design básico
+
+### **Integración (10%)**
+- [ ] Frontend y backend comunicados correctamente
+- [ ] Datos se actualizan en tiempo real
+- [ ] Validaciones funcionan
+
+---
+
+## **📦 DEPENDENCIAS NECESARIAS**
+
+### **Backend (server/package.json)**
+```json
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
+```
+
+### **Frontend (client/package.json)**
+```json
+{
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "axios": "^1.11.0"
+  }
+}
+```
+
+---
+
+## **🚀 INSTRUCCIONES DE INSTALACIÓN**
+
+### **1. Configurar Base de Datos**
+```sql
+-- Crear base de datos y tabla (ver estructura arriba)
+-- Insertar datos de prueba
+```
+
+### **2. Configurar Backend**
+```bash
+cd server
+npm install
+# Configurar archivo .env con credenciales de MySQL
+npm run dev
+```
+
+### **3. Configurar Frontend**
+```bash
+cd client
+npm install
+npm start
+```
+
+### **4. Variables de Entorno (.env)**
+```
+DB_HOST=localhost
+DB_USER=tu_usuario
+DB_PASSWORD=tu_password
+DB_NAME=biblioteca_digital
+```
+
+### **5. Configurar Herramienta BI**
+
+#### **Power BI Desktop (Recomendado)**
+1. Descargar Power BI Desktop desde: https://powerbi.microsoft.com/desktop/
+2. Instalar y abrir la aplicación
+3. Seguir los pasos de conexión mencionados en la sección BI
+
+#### **Tableau Public (Alternativa)**
+1. Descargar Tableau Public desde: https://public.tableau.com/
+2. Crear cuenta gratuita
+3. Seguir los pasos de conexión mencionados en la sección BI
+
+#### **Requisitos de Conexión**
+- MySQL debe estar ejecutándose
+- Base de datos `biblioteca_digital` debe existir
+- Usuario MySQL debe tener permisos de lectura
+- Puerto 3306 debe estar disponible
+
+---
+
+## **📋 ENTREGABLES DEL PROYECTO**
+
+### **Obligatorios**
+1. **Código fuente completo** del proyecto
+2. **Base de datos** con datos de prueba
+3. **Dashboard BI** (archivo .pbix o .twbx)
+4. **README.md** con instrucciones de instalación
+5. **Presentación** del proyecto (5 minutos máximo)
+
+### **Opcionales (Puntos Extra)**
+- [ ] Búsqueda por autor o género
+- [ ] Filtros adicionales
+- [ ] Validación de ISBN
+- [ ] Confirmación antes de eliminar
+- [ ] Diseño más elaborado
+
+---
+
+## **⚠️ CONSIDERACIONES IMPORTANTES**
+
+### **Validaciones Necesarias**
+- Título y autor no pueden estar vacíos
+- Año debe ser un número válido
+- ISBN debe ser único
+- Estado debe ser uno de los valores permitidos
+
+### **Manejo de Errores**
+- Mostrar mensajes de error claros al usuario
+- Validar datos tanto en frontend como backend
+- Manejar errores de conexión a la base de datos
+
+### **Buenas Prácticas**
+- Código limpio y comentado
+- Nombres de variables descriptivos
+- Separación de responsabilidades
+- Uso correcto de hooks de React
+
+---
+
+## **🎯 OBJETIVOS DE APRENDIZAJE**
+
+Al completar este proyecto, los estudiantes habrán aprendido:
+
+1. **Desarrollo Full-Stack** con Node.js y React
+2. **Operaciones CRUD** completas
+3. **Integración Frontend-Backend** con APIs REST
+4. **Manejo de estado** en React
+5. **Conexión a base de datos** MySQL
+6. **Validación de datos** en ambos extremos
+7. **Estructura de proyectos** profesionales
+8. **Business Intelligence** básico con herramientas BI
+9. **Visualización de datos** y creación de dashboards
+10. **Conexión directa** entre base de datos y herramientas BI
+
+---
+
+## **📞 SOPORTE Y DUDAS**
+
+Para cualquier duda sobre el proyecto, consultar:
+- Documentación oficial de React
+- Documentación de Express.js
+- Documentación de MySQL
+- Profesor durante horarios de consulta
+
+---
+
+**¡Éxito en el desarrollo del proyecto! 🚀**
+
+# 📊 **TUTORIAL BÁSICO: Power BI Desktop para Principiantes**
+## **Paso a Paso - Sin Conocimientos Previos**
+
+---
+
+## **🎯 ¿QUÉ VAMOS A HACER?**
+
+Vamos a crear un dashboard (tablero) que muestre gráficos bonitos de los libros de nuestra biblioteca digital. Es como hacer un "cuadro de mando" que nos diga cosas interesantes sobre nuestros datos.
+
+**¿Qué aprenderás?**
+- Cómo instalar Power BI Desktop
+- Cómo conectar a nuestra base de datos MySQL
+- Cómo hacer gráficos bonitos
+- Cómo crear un dashboard profesional
+
+---
+
+## **📥 PASO 1: INSTALAR POWER BI DESKTOP**
+
+### **¿Qué es Power BI Desktop?**
+Es un programa GRATIS de Microsoft que nos permite hacer gráficos y tableros bonitos con nuestros datos.
+
+### **Cómo instalarlo:**
+
+1. **Abrir el navegador web** (Chrome, Firefox, Edge, etc.)
+
+2. **Ir a esta página**: https://powerbi.microsoft.com/desktop/
+   - Escribir en la barra de direcciones: `powerbi.microsoft.com/desktop/`
+   - Presionar Enter
+
+3. **Hacer clic en "Descargar gratis"**
+   - Buscar el botón azul que dice "Descargar gratis"
+   - Hacer clic en él
+
+4. **Descargar el archivo**
+   - Se descargará un archivo llamado `PBIDesktopSetup.exe`
+   - Esperar a que termine la descarga
+
+5. **Instalar el programa**
+   - Hacer doble clic en el archivo descargado
+   - Aparecerá una ventana de instalación
+   - Hacer clic en "Siguiente" varias veces
+   - Hacer clic en "Instalar"
+   - Esperar a que termine la instalación
+   - Hacer clic en "Finalizar"
+
+6. **Abrir Power BI Desktop**
+   - Buscar "Power BI Desktop" en el menú inicio
+   - Hacer clic para abrirlo
+
+---
+
+## **🔌 PASO 2: CONECTAR A NUESTRA BASE DE DATOS**
+
+### **¿Qué vamos a hacer?**
+Vamos a decirle a Power BI que se conecte a nuestra base de datos MySQL donde están guardados los libros.
+
+### **Paso a paso:**
+
+1. **Abrir Power BI Desktop**
+   - Si no está abierto, abrirlo desde el menú inicio
+
+2. **Hacer clic en "Obtener datos"**
+   - En la pantalla principal, buscar el botón "Obtener datos"
+   - Hacer clic en él
+
+3. **Buscar MySQL**
+   - Aparecerá una ventana con muchas opciones
+   - Buscar "MySQL database" en la lista
+   - Hacer clic en "MySQL database"
+   - Hacer clic en "Conectar"
+
+4. **Llenar los datos de conexión**
+   - **Servidor**: escribir `localhost`
+   - **Base de datos**: escribir `biblioteca_digital`
+   - **Usuario**: escribir `root` (o el usuario que uses para MySQL)
+   - **Contraseña**: escribir tu contraseña de MySQL
+   - Hacer clic en "Aceptar"
+
+5. **Seleccionar la tabla**
+   - Aparecerá una ventana mostrando las tablas
+   - Buscar la tabla "libros"
+   - Marcar la casilla al lado de "libros"
+   - Hacer clic en "Cargar"
+
+6. **¡Listo!**
+   - Power BI ahora tiene nuestros datos
+   - Deberías ver una tabla con todos los libros
+
+---
+
+## **📊 PASO 3: HACER NUESTRO PRIMER GRÁFICO**
+
+### **Vamos a hacer un gráfico de barras que muestre cuántos libros hay de cada género**
+
+1. **Buscar el panel de visualizaciones**
+   - A la derecha de la pantalla hay un panel con iconos de gráficos
+   - Buscar el icono que parece barras (📊)
+
+2. **Hacer clic en el gráfico de barras**
+   - Hacer clic en el icono de barras
+   - Aparecerá un cuadro vacío en el centro
+
+3. **Arrastrar los datos**
+   - A la derecha hay una lista de columnas (titulo, autor, genero, etc.)
+   - **Arrastrar "genero"** al área que dice "Eje Y"
+   - **Arrastrar "id"** al área que dice "Valores"
+
+4. **¡Ver el resultado!**
+   - Debería aparecer un gráfico de barras mostrando cuántos libros hay de cada género
+
+5. **Cambiar el título**
+   - Hacer clic en el gráfico
+   - Buscar "Título" en el panel de formato (a la derecha)
+   - Cambiar el título a "Libros por Género"
+
+---
+
+## **🥧 PASO 4: HACER UN GRÁFICO CIRCULAR**
+
+### **Vamos a hacer un gráfico circular que muestre cuántos libros están disponibles vs prestados**
+
+1. **Hacer clic en el gráfico circular**
+   - En el panel de visualizaciones, buscar el icono de círculo (🥧)
+   - Hacer clic en él
+
+2. **Arrastrar los datos**
+   - **Arrastrar "estado"** al área que dice "Leyenda"
+   - **Arrastrar "id"** al área que dice "Valores"
+
+3. **Cambiar el título**
+   - Hacer clic en el gráfico
+   - Cambiar el título a "Libros por Estado"
+
+---
+
+## **📈 PASO 5: HACER UN GRÁFICO DE LÍNEAS**
+
+### **Vamos a hacer un gráfico que muestre cuántos libros se publicaron cada año**
+
+1. **Hacer clic en el gráfico de líneas**
+   - Buscar el icono de líneas (📈)
+   - Hacer clic en él
+
+2. **Arrastrar los datos**
+   - **Arrastrar "año"** al área que dice "Eje X"
+   - **Arrastrar "id"** al área que dice "Eje Y"
+
+3. **Cambiar el título**
+   - Cambiar el título a "Libros por Año de Publicación"
+
+---
+
+## **📋 PASO 6: HACER UNA TABLA**
+
+### **Vamos a hacer una tabla que muestre los autores con más libros**
+
+1. **Hacer clic en la tabla**
+   - Buscar el icono de tabla (📋)
+   - Hacer clic en él
+
+2. **Arrastrar los datos**
+   - **Arrastrar "autor"** al área que dice "Columnas"
+   - **Arrastrar "id"** al área que dice "Valores"
+
+3. **Cambiar el título**
+   - Cambiar el título a "Libros por Autor"
+
+---
+
+## **🔢 PASO 7: HACER UNA TARJETA CON NÚMEROS**
+
+### **Vamos a hacer una tarjeta que muestre el total de libros**
+
+1. **Hacer clic en la tarjeta**
+   - Buscar el icono que parece una tarjeta (🔢)
+   - Hacer clic en él
+
+2. **Arrastrar los datos**
+   - **Arrastrar "id"** al área que dice "Campos"
+
+3. **Cambiar el título**
+   - Cambiar el título a "Total de Libros"
+
+---
+
+## **🎨 PASO 8: ORGANIZAR NUESTRO DASHBOARD**
+
+### **Ahora vamos a organizar todos los gráficos de manera bonita**
+
+1. **Mover los gráficos**
+   - Hacer clic y arrastrar cada gráfico para organizarlos
+   - Sugerencia de layout:
+     ```
+     ┌─────────────────────────────────┐
+     │        Total de Libros          │
+     ├─────────────────────────────────┤
+     │  Libros por Género              │
+     │  Libros por Estado              │
+     ├─────────────────────────────────┤
+     │  Libros por Año                 │
+     │  Libros por Autor               │
+     └─────────────────────────────────┘
+     ```
+
+2. **Cambiar colores (opcional)**
+   - Hacer clic en cualquier gráfico
+   - En el panel de formato, buscar "Colores"
+   - Elegir colores que te gusten
+
+3. **Cambiar el fondo**
+   - Hacer clic en un espacio vacío
+   - En el panel de formato, buscar "Fondo de página"
+   - Elegir un color suave (gris claro, azul claro, etc.)
+
+---
+
+## **💾 PASO 9: GUARDAR NUESTRO TRABAJO**
+
+### **Vamos a guardar nuestro dashboard para poder usarlo después**
+
+1. **Hacer clic en "Archivo"**
+   - En la esquina superior izquierda
+
+2. **Hacer clic en "Guardar como"**
+   - Seleccionar la carpeta donde quieres guardarlo
+   - Escribir el nombre: "Dashboard_Biblioteca"
+   - Hacer clic en "Guardar"
+
+3. **¡Listo!**
+   - Tu dashboard está guardado
+   - Puedes abrirlo cuando quieras
+
+---
+
+## **🎯 PASO 10: AGREGAR UN TÍTULO AL DASHBOARD**
+
+### **Vamos a agregar un título principal a nuestro dashboard**
+
+1. **Hacer clic en "Insertar"**
+   - En la barra de menú superior
+
+2. **Hacer clic en "Cuadro de texto"**
+   - Aparecerá un cuadro de texto en el dashboard
+
+3. **Escribir el título**
+   - Escribir: "Dashboard Biblioteca Digital"
+   - Cambiar el tamaño de letra (hacer clic en el texto y usar el panel de formato)
+   - Mover el título a la parte superior
+
+---
+
+## **✅ ¡FELICIDADES! HAS TERMINADO**
+
+### **¿Qué has logrado?**
+- ✅ Instalaste Power BI Desktop
+- ✅ Te conectaste a la base de datos
+- ✅ Creaste 5 tipos de gráficos diferentes
+- ✅ Organizaste un dashboard profesional
+- ✅ Guardaste tu trabajo
+
+### **¿Qué puedes hacer ahora?**
+- **Explorar más**: Prueba diferentes tipos de gráficos
+- **Cambiar colores**: Personaliza el diseño
+- **Agregar filtros**: Permite que otros exploren los datos
+- **Compartir**: Muestra tu dashboard a otros
+
+---
+
+## **🔧 SI ALGO NO FUNCIONA**
+
+### **Problema: No puedo conectar a la base de datos**
+**Solución:**
+1. Verificar que MySQL está ejecutándose
+2. Verificar que la base de datos "biblioteca_digital" existe
+3. Verificar que el usuario y contraseña son correctos
+
+### **Problema: Los gráficos están vacíos**
+**Solución:**
+1. Verificar que arrastraste los datos correctos
+2. Verificar que hay datos en la base de datos
+3. Verificar que no hay filtros aplicados
+
+### **Problema: Power BI se ve raro**
+**Solución:**
+1. Cerrar y abrir Power BI Desktop
+2. Verificar que tienes la versión más reciente
+3. Reiniciar la computadora si es necesario
+
+---
+
+## **📚 PRÓXIMOS PASOS (OPCIONAL)**
+
+### **Si quieres aprender más:**
+1. **Agregar filtros**: Permite que otros exploren los datos
+2. **Crear más páginas**: Agregar diferentes vistas
+3. **Cambiar colores**: Personalizar el diseño
+4. **Agregar más gráficos**: Explorar otras visualizaciones
+
+### **Recursos útiles:**
+- **Ayuda de Power BI**: Presionar F1 en Power BI Desktop
+- **Tutoriales oficiales**: https://docs.microsoft.com/power-bi/
+- **Comunidad**: https://community.powerbi.com/
+
+---
+
+## **🎉 RESUMEN DE LO QUE APRENDISTE**
+
+1. **Instalación**: Cómo instalar Power BI Desktop
+2. **Conexión**: Cómo conectar a una base de datos MySQL
+3. **Gráficos**: Cómo crear 5 tipos de gráficos diferentes
+4. **Organización**: Cómo organizar un dashboard profesional
+5. **Guardado**: Cómo guardar tu trabajo
+
+**¡Ahora eres capaz de crear dashboards profesionales con Power BI Desktop!** 🚀
+
+---
+
+*Este tutorial te llevó paso a paso desde cero hasta crear un dashboard completo. ¡Felicitaciones por completarlo!*
+
+# Clase 1: Introducción al Backend y la Arquitectura Empresarial
+
+En esta primera sesión, sentaremos las bases de nuestra aplicación inteligente, centrándonos en la parte **backend**. Exploraremos por qué **Spring Boot** es una herramienta esencial para el desarrollo moderno y cómo podemos estructurar nuestras aplicaciones de manera profesional y escalable.
+
+## 0. Requisitos y Herramientas
+
+Para seguir este curso, necesitarás tener instaladas algunas herramientas esenciales. Una configuración adecuada desde el principio te ahorrará mucho tiempo y problemas.
+
+### a. JDK (Java Development Kit)
+
+El JDK es el kit de desarrollo de Java. Es indispensable para compilar y ejecutar aplicaciones Java. Piensa en el JDK como la "caja de herramientas" que te permite escribir y ejecutar código Java.
+
+- **Instalación**: Descarga la versión de [Adoptium JDK](https://adoptium.net/es/temurin/releases) o de [Oracle JDK]. Se recomienda la versión 17 o superior, ya que son versiones de soporte a largo plazo (LTS). Sigue las instrucciones de instalación para tu sistema operativo (Windows, macOS o Linux).
+- **Verificación**: Abre tu terminal o línea de comandos y escribe `java -version`. Deberías ver la versión de Java instalada. Esto confirma que el sistema operativo puede encontrar la herramienta de Java.
+
+### b. Visual Studio Code (VSCode)
+
+Aunque puedes usar otros IDEs (como IntelliJ IDEA o Eclipse), VSCode es ligero y muy popular en el desarrollo web. Es altamente extensible, lo que lo hace perfecto para nuestro proyecto.
+
+- **Instalación**: Descarga e instala [Visual Studio Code](https://code.visualstudio.com/).
+- **Extensiones recomendadas**:
+  - **Extension Pack for Java**: Es una colección de extensiones que incluye herramientas clave como un depurador, un gestor de proyectos Maven, y soporte para el lenguaje Java. Simplifica la gestión de dependencias y el ciclo de vida del proyecto.
+  - **Spring Boot Extension Pack**: Proporciona un soporte avanzado para proyectos Spring Boot, incluyendo atajos para crear archivos, sugerencias de código para propiedades de Spring y una vista de los beans de la aplicación.
+
+### c. Maven
+
+Maven es una herramienta de automatización de construcción. Simplifica la gestión de dependencias, la compilación de código, y la generación de paquetes de la aplicación. En lugar de descargar cada biblioteca manualmente, Maven se encarga de todo por nosotros.
+
+- **Instalación**: Si usas VSCode con la extensión de Java, Maven suele estar incluido. Si no, puedes descargarlo desde el [sitio oficial](https://maven.apache.org/download.cgi).
+- **Verificación**: En la terminal, ejecuta `mvn -version`.
+
+### d. PostgreSQL
+
+PostgreSQL es un potente sistema de gestión de bases de datos relacionales, conocido por su fiabilidad y robustez. Lo usaremos para almacenar los datos de nuestra aplicación.
+
+- **Instalación**: Descarga el instalador desde el [sitio oficial de PostgreSQL](https://www.postgresql.org/download/). Sigue las instrucciones para tu sistema operativo.
+- **Herramienta de gestión**: Se recomienda instalar también **pgAdmin**, una herramienta gráfica que viene con el instalador de PostgreSQL, para gestionar y visualizar fácilmente las bases de datos.
+
+## 1. Introducción a Spring Boot
+
+### ¿Qué es Spring Boot?
+
+**Spring Boot** es un _framework_ de código abierto que simplifica la creación de aplicaciones Java. Es una extensión del popular _framework_ Spring, pero con un enfoque en la **convención sobre la configuración**. Esto significa que hace la mayor parte del trabajo pesado por nosotros, permitiéndonos concentrarnos en la lógica de negocio en lugar de en la configuración tediosa.
+
+**Ventajas clave**:
+
+- **Desarrollo rápido y sencillo**: Reduce drásticamente el tiempo de configuración. Por ejemplo, si Spring Boot detecta una dependencia de base de datos como `PostgreSQL Driver`, automáticamente configura un `DataSource` por nosotros, sin que tengamos que escribir una línea de código para ello.
+- **Servidor embebido**: Incluye un servidor web (como Tomcat) listo para usar, lo que elimina la necesidad de descargar, configurar y desplegar la aplicación en un servidor externo. Simplemente construyes tu aplicación y la ejecutas como un archivo JAR.
+- **Dependencias simplificadas**: Gestiona las dependencias de manera automática con "starter dependencies" (ej. `spring-boot-starter-web`). Estos "starters" son conjuntos de dependencias que agrupan todas las bibliotecas comunes necesarias para un tipo de proyecto específico. Esto evita que tengas que buscar y gestionar cada una de las dependencias manualmente.
+
+### Creación de un proyecto con Spring Initializr
+
+La forma más fácil de comenzar es a través de [Spring Initializr](https://start.spring.io/). Esta herramienta web genera el esqueleto de un proyecto con las dependencias y la estructura de directorios necesarias.
+
+**Selecciones recomendadas para esta clase**:
+
+- **Project: Maven o Gradle**. Son los gestores de dependencias y herramientas de construcción más populares. Maven es muy común y fácil de entender.
+- **Language: Java**.
+- **Spring Boot**: La última versión estable.
+- **Project Metadata**: Define los metadatos de tu proyecto, como el grupo (ej. `com.miempresa`) y el artefacto (ej. `aplicacioninteligente`).
+- **Dependencies**: Son las bibliotecas que nuestra aplicación necesita. Para este proyecto, agregaremos:
+  - `Spring Web`: Nos permite crear la API RESTful.
+  - `Spring Data JPA`: Simplifica la interacción con la base de datos usando Java Persistence API.
+  - `PostgreSQL Driver`: El conector que permite a Spring Boot comunicarse con la base de datos PostgreSQL.
+
+## 2. Arquitectura Empresarial
+
+Para construir aplicaciones robustas, es fundamental seguir un modelo arquitectónico que separe las responsabilidades. El patrón más común es la arquitectura de **capas**. Esta separación de responsabilidades, también conocida como "separación de preocupaciones", hace que el código sea más organizado, fácil de mantener y probar.
+
+### Las 3 Capas Principales
+
+Una aplicación empresarial suele dividirse en tres capas lógicas.
+
+1. **Capa de Presentación (Controller)**:
+    - Es el punto de entrada de la aplicación. Su única responsabilidad es recibir las peticiones HTTP (GET, POST, etc.) del cliente y delegarlas a la capa de servicio. También se encarga de devolver una respuesta HTTP al cliente.
+    - **No contiene lógica de negocio**. Piensa en el controlador como un simple "portero" que dirige el tráfico. Un ejemplo de su función es mapear una URL como `/api/productos` a un método específico, como `getAllProductos()`.
+
+2. **Capa de Servicio (Service)**:
+    - Contiene la **lógica de negocio** de la aplicación. Aquí se encuentra el "cerebro" de la aplicación.
+    - Coordina las operaciones y puede interactuar con múltiples repositorios para realizar una tarea compleja. Por ejemplo, un servicio podría tomar los datos del controlador, validar que el precio del producto sea mayor a cero, y luego interactuar con el repositorio para guardar el producto.
+3. **Capa de Datos (Repository)**:
+    - Se encarga de la persistencia y la recuperación de datos. Su responsabilidad es puramente la comunicación con la base de datos.
+    - La interfaz `JpaRepository` de Spring es una herramienta poderosa que nos proporciona métodos para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) de forma automática. Simplemente creamos una interfaz y Spring se encarga de la implementación por nosotros, eliminando la necesidad de escribir sentencias SQL manuales para operaciones básicas.
+
+## 3. Creación de una API RESTful con PostgreSQL usando IA
+
+Ahora, pasaremos a la práctica. Crearemos una API REST para gestionar una entidad, por ejemplo, `Producto`, que nos permitirá realizar operaciones básicas de CRUD.
+
+### Paso 1: Configurar la Conexión a la Base de Datos
+
+En el archivo `src/main/resources/application.properties`, agregamos las propiedades de configuración para nuestra base de datos.
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/mi_basedatos
+spring.datasource.username=mi_usuario
+spring.datasource.password=mi_contraseña
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+- `spring.datasource.url`: Indica la ubicación de la base de datos (protocolo, host, puerto, nombre de la base de datos).
+- `spring.datasource.username` y `spring.datasource.password`: Son las credenciales de acceso.
+- `spring.jpa.hibernate.ddl-auto=update`: Le dice a Hibernate (la implementación de JPA) que cree o actualice el esquema de la base de datos automáticamente basándose en las entidades Java que definamos. Advertencia: Esta configuración es excelente para el desarrollo, pero no se recomienda para entornos de producción.
+- `spring.jpa.show-sql=true`: Imprime las sentencias SQL generadas por JPA en la consola, lo que es muy útil para depurar.
+
+**Prompt para IA**:
+
+> Crea la configuración para la conexión a la base de datos postgresql de nombre 'mi_basededatos' con el usuario 'mi_usuario' y contraseña 'mi_contraseña'. Habilita la actualización del esquema automático en hibernate e imprime las sentencias sql de JPA en consola.
+
+### Paso 2: Crear el Modelo (`Entity`)
+
+Esta clase representa una tabla en nuestra base de datos. Le indicaremos a Spring que la trate como una entidad con la anotación `@Entity`. Podemos usar la **IA para generar el esqueleto** de esta clase, dándole los campos que necesitamos.
+
+```java
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Producto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nombre;
+    private Double precio;
+
+    // Getters y Setters
+    // (Puedes usar la IA para generarlos o la función de tu IDE)
+}
+```
+
+- `@Entity`: Le indica a Spring que esta clase es un modelo de datos y debe mapearse a una tabla en la base de datos.
+- `@Id`: Marca la clave primaria de la tabla.
+- `@GeneratedValue`: Le indica a la base de datos que genere automáticamente un valor para la clave primaria. `GenerationType.IDENTITY` usa la columna de auto-incremento de la base de datos.
+
+**Prompt para IA**:
+
+> Genera la clase Java `Producto` como una entidad de JPA en Spring Boot. La clase debe tener un `id` de tipo Long con autogeneración, un campo `nombre` de tipo String y un campo `precio` de tipo Double. Incluye los getters y setters.
+
+### Paso 3: Crear el Repositorio (`Repository`)
+
+Esta interfaz nos dará acceso directo a las operaciones de la base de datos. No necesitamos escribir ninguna implementación, ya que Spring Data JPA lo hace por nosotros.
+
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+    // Spring Data JPA proporciona métodos como save(), findById(), findAll(), deleteById(), etc.
+    // Simplemente al heredar de JpaRepository, ya tenemos acceso a todas estas funcionalidades.
+}
+```
+
+**Prompt para IA**:
+
+> Genera una interfaz de Spring Data JPA llamada `ProductoRepository` que se conecte a la entidad `Producto` y use un tipo de ID de `Long`.
+
+### Paso 4: Crear la Capa de Servicio (`Service`)
+
+La clase de servicio contendrá la lógica de negocio. Separar el servicio del controlador es una buena práctica porque nos permite reutilizar la lógica de negocio en diferentes partes de la aplicación.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductoService {
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    public List<Producto> findAll() {
+        return productoRepository.findAll();
+    }
+
+    public Optional<Producto> findById(Long id) {
+        return productoRepository.findById(id);
+    }
+
+    public Producto save(Producto producto) {
+        // Aquí podríamos añadir lógica de negocio, como validaciones
+        // if (producto.getPrecio() <= 0) { throw new IllegalArgumentException("El precio debe ser positivo"); }
+        return productoRepository.save(producto);
+    }
+
+    public void deleteById(Long id) {
+        productoRepository.deleteById(id);
+    }
+}
+```
+
+- `@Service`: Anotación que marca esta clase como un componente de servicio de Spring.
+- `@Autowired`: Permite a Spring inyectar automáticamente una instancia de `ProductoRepository`.
+
+**Prompt para IA**:
+
+> Escribe la clase de servicio `ProductoService` para Spring Boot. Debe usar el repositorio `ProductoRepository` y tener métodos para encontrar todos los productos, encontrar un producto por ID, guardar un producto y eliminar un producto por ID.
+
+### Paso 5: Crear el Controlador (`Controller`)
+
+El controlador expone nuestros endpoints RESTful para que el frontend pueda interactuar con la API.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/productos")
+public class ProductoController {
+
+    @Autowired
+    private ProductoService productoService;
+
+    // GET /api/productos -> Obtiene todos los productos
+    @GetMapping
+    public List<Producto> getAllProductos() {
+        return productoService.findAll();
+    }
+
+    // GET /api/productos/{id} -> Obtiene un producto por su ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Producto> getProductoById(@PathVariable Long id) {
+        Optional<Producto> producto = productoService.findById(id);
+        return producto.map(ResponseEntity::ok)
+                       .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // POST /api/productos -> Crea un nuevo producto
+    // El cuerpo de la petición (JSON) se mapea automáticamente a la clase Producto
+    @PostMapping
+    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
+        Producto newProducto = productoService.save(producto);
+        return new ResponseEntity<>(newProducto, HttpStatus.CREATED);
+    }
+
+    // PUT /api/productos/{id} -> Actualiza un producto existente
+    @PutMapping("/{id}")
+    public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto productoDetails) {
+        Optional<Producto> optionalProducto = productoService.findById(id);
+        if (optionalProducto.isPresent()) {
+            Producto producto = optionalProducto.get();
+            producto.setNombre(productoDetails.getNombre());
+            producto.setPrecio(productoDetails.getPrecio());
+            Producto updatedProducto = productoService.save(producto);
+            return ResponseEntity.ok(updatedProducto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // DELETE /api/productos/{id} -> Elimina un producto por su ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
+        productoService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+```
+
+**Prompt para IA**:
+
+> Genera una clase de controlador REST de Spring Boot para la entidad `Producto`. La clase debe tener los endpoints para realizar las operaciones CRUD (GET, POST, PUT, DELETE) y mapearlos a los métodos de la clase `ProductoService`.
+# Clase 2: Desarrollo Frontend con Angular 20
+
+En esta clase, nos sumergiremos en el mundo del **desarrollo frontend** y exploraremos cómo Angular nos permite crear interfaces de usuario modernas y dinámicas. Nos enfocaremos en su arquitectura más reciente, utilizando componentes standalone para simplificar la estructura del proyecto, y veremos cómo la Inteligencia Artificial puede acelerar la creación de nuestra interfaz de usuario.
+
+## 1. Introducción al Desarrollo Web
+
+### a. Fundamentos (HTML, CSS, JavaScript)
+
+Antes de Angular, es crucial entender los pilares de la web. Estos tres lenguajes forman la base sobre la cual se construye cualquier sitio o aplicación web, desde el más simple blog hasta el servicio de streaming más complejo.
+
+- **HTML (HyperText Markup Language)**: Es el lenguaje de marcado que define la **estructura** y el contenido de una página web. Piensa en HTML como el esqueleto de tu aplicación. Define las partes lógicas del contenido, como títulos, párrafos, tablas, listas y enlaces. Sin HTML, una página web sería solo texto sin formato.
+- **CSS (Cascading Style Sheets)**: Es el lenguaje de estilos que define **la apariencia y el diseño** de los elementos HTML. Con CSS, puedes dar color, formato y organizar el diseño de tu sitio. Controla aspectos como colores, tipografía, espaciado, y la posición de los elementos. Es lo que transforma un esqueleto básico en una interfaz visualmente atractiva.
+- **JavaScript**: Es el lenguaje de programación que añade **interactividad y lógica** a una página web. Permite que la página reaccione a las acciones del usuario (como clics o movimientos del mouse), valide formularios, o incluso cargue nuevos datos sin recargar la página completa. JavaScript es el "músculo" que hace que la experiencia de usuario sea dinámica y receptiva.
+
+### b. ¿Por qué Angular?
+
+En las aplicaciones web modernas, una página simple ya no es suficiente. Los usuarios esperan experiencias dinámicas y rápidas, similares a las de las aplicaciones de escritorio. Aquí es donde entran los **Single Page Applications (SPA)** y frameworks como Angular.
+
+Un **SPA** es una aplicación web que se carga en una sola página HTML, y el contenido se reescribe dinámicamente a medida que el usuario interactúa. Esto hace que la navegación sea mucho más fluida y rápida, ya que el navegador no tiene que recargar toda la página. Angular es un framework de Google que nos ayuda a construir SPAs a gran escala. Proporciona una estructura clara, herramientas robustas y un conjunto de principios de diseño que permiten a los equipos de desarrollo colaborar de manera eficiente y mantener el código base a lo largo del tiempo.
+
+## 2. Fundamentos de Angular
+
+### a. TypeScript
+
+Angular está construido sobre **TypeScript**, un superconjunto de JavaScript que añade tipado estático. Esto significa que podemos definir tipos de datos para nuestras variables, lo que ayuda a prevenir errores comunes y hace que el código sea más predecible y fácil de mantener. A diferencia de JavaScript, donde una variable puede cambiar de tipo (`let x = 10; x = "hola";`), TypeScript lo impide, obligando a una mayor consistencia.
+
+- **Ventaja**: Mayor legibilidad y un sistema de validación que te avisa de los errores antes de ejecutar el código. Por ejemplo, si intentas asignar una cadena a una variable que esperas que sea un número, TypeScript te lo señalará de inmediato en tu editor.
+
+### b. Estructura de la Aplicación y Componentes
+
+En las versiones más recientes de Angular, el enfoque principal son los componentes **standalone** (autónomos). Esto simplifica la estructura, eliminando la necesidad de los módulos tradicionales. Ahora, cada componente es independiente y gestiona sus propias dependencias, lo que hace que el código sea más legible y más fácil de organizar.
+
+- **Componentes (`Components`)**: Son el bloque de construcción fundamental de una aplicación Angular. Cada componente controla una parte de la pantalla (ej. un encabezado, una tabla de productos o un formulario). Un componente está compuesto por:
+  - **Un archivo de TypeScript (lógica)**: Contiene la clase del componente y define las propiedades y métodos.
+  - **Un archivo de HTML (plantilla)**: Contiene la estructura de la interfaz de usuario.
+  - **Un archivo de CSS (estilos)**: Contiene las reglas de estilo para ese componente en particular.
+- **Modelos (`Models`)**: Son clases o interfaces que definen la estructura de los datos que vamos a usar en la aplicación. Por ejemplo, la clase Producto que definimos en el backend, que nos asegura que los datos que recibimos y enviamos tienen el formato correcto.
+- **Servicios (`Services`)**: Contienen lógica que se puede compartir entre diferentes componentes, como la lógica para comunicarse con el backend a través de APIs, realizar cálculos complejos o gestionar el estado de la aplicación. Son una excelente forma de mantener la lógica de negocio separada de la lógica de la interfaz de usuario.
+
+## 3. Creación de una Aplicación para la Gestión de Productos
+
+Vamos a crear una interfaz de usuario básica para gestionar los productos de nuestra API.
+
+### Paso 1: Configuración Inicial del Proyecto
+
+- Abre tu terminal y crea un nuevo proyecto Angular: `ng new mi-app-productos`
+- Navega al directorio del proyecto: `cd mi-app-productos`
+- Inicia el servidor de desarrollo: `ng serve --open`
+
+### Paso 2: Crear el Modelo `Producto`
+
+Este modelo nos ayudará a tipar los datos que recibiremos de la API. Hemos añadido el atributo `imagenUrl` para poder mostrar imágenes de cada producto.
+
+```typescript
+// src/app/producto.ts
+export interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  imagenUrl: string;
+}
+```
+
+**Prompt para IA**:
+
+> Crea una interfaz de TypeScript llamada `Producto` con los siguientes campos: `id` (número), `nombre` (string), `precio` (número) y `imagenUrl` (string).
+
+### Paso 3: Crear el Servicio de Productos
+
+Vamos a crear un servicio que se encargará de gestionar los datos de los productos. Esto es una buena práctica porque nos permite desacoplar los datos del componente, haciendo que el código sea más reutilizable y fácil de probar.
+
+- **Comando**: `ng generate service producto`
+- **Lógica del servicio (`producto.service.ts`)**:
+
+  ```typescript
+  import { Injectable } from '@angular/core';
+  import { Producto } from './producto';
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ProductoService {
+    constructor() { }
+
+    // Datos ficticios. En la siguiente clase, esta lógica se reemplazará por una llamada HTTP.
+    getProductos(): Producto[] {
+      return [
+        { id: 1, nombre: 'Laptop', precio: 1200, imagenUrl: 'https://placehold.co/400x200/cccccc/000000?text=Laptop' },
+        { id: 2, nombre: 'Mouse', precio: 25, imagenUrl: 'https://placehold.co/400x200/cccccc/000000?text=Mouse' },
+        { id: 3, nombre: 'Teclado Mecánico', precio: 75, imagenUrl: 'https://placehold.co/400x200/cccccc/000000?text=Teclado' },
+        { id: 4, nombre: 'Monitor', precio: 300, imagenUrl: 'https://placehold.co/400x200/cccccc/000000?text=Monitor' },
+        { id: 5, nombre: 'Cámara Web', precio: 50, imagenUrl: 'https://placehold.co/400x200/cccccc/000000?text=Camara' }
+      ];
+    }
+  }
+  ```
+
+**Prompt para IA**:
+
+> Genera un servicio de Angular llamado `ProductoService` con una función llamada `getProductos`. La función debe devolver un array de objetos `Producto` con datos ficticios. Asegúrate de que los objetos incluyan los campos `id`, `nombre`, `precio` y `imagenUrl`.
+
+### Paso 4: Crear una Pantalla de Listado de Productos y un Subcomponente de Tarjeta
+
+En este paso, crearemos un componente principal `(producto-list`) que será el encargado de manejar la lista de productos y un subcomponente (`producto-card`) que mostrará cada producto individualmente como una tarjeta.
+
+- Comando para el componente de listado: `ng generate component producto-list --skip-tests`
+- Comando para el componente de tarjeta: `ng generate component producto-card --skip-tests`
+
+#### Componente de Tarjeta (`producto-card`)
+
+Este componente se encargará de la presentación de un solo producto. Recibirá un objeto `Producto` como entrada a través de `@Input`.
+
+- **Lógica del componente (`producto-card.component.ts`)**:
+
+  ```typescript
+  import { Component, Input } from '@angular/core';
+  import { CommonModule } from '@angular/common';
+  import { Producto } from '../producto'; // Importamos la interfaz Producto
+
+  @Component({
+    selector: 'app-producto-card',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './producto-card.component.html',
+    styleUrl: './producto-card.component.css'
+  })
+  export class ProductoCardComponent {
+    // Con @Input, este componente recibe un objeto 'producto' del componente padre
+    @Input() producto!: Producto;
+  }
+  ```
+
+- **Plantilla (`producto-card.component.html`)**:
+
+  ```html
+  <div class="product-card">
+    <img [src]="producto.imagenUrl" alt="Imagen de {{ producto.nombre }}" class="product-image">
+    <div class="product-info">
+      <h3 class="product-name">{{ producto.nombre }}</h3>
+      <p class="product-price">{{ producto.precio | currency:'USD':'symbol':'1.2-2' }}</p>
+    </div>
+  </div>
+  ```
+
+- **Estilos (`producto-card.component.css`)**:
+
+  ```css
+  .product-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    background-color: #fff;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .product-info {
+    padding: 15px;
+  }
+
+  .product-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0 0 10px;
+    color: #333;
+  }
+
+  .product-price {
+    font-size: 1em;
+    color: #007bff;
+    font-weight: 600;
+  }
+  ```
+
+#### `Componente de Listado (`producto-list`)`
+
+Este componente principal ahora utilizará el nuevo servicio de productos.
+
+- **Lógica del componente (`producto-list.component.ts`)**:
+
+  ```typescript
+  import { Component, OnInit } from '@angular/core';
+  import { CommonModule } from '@angular/common';
+  import { Producto } from '../producto'; // Importamos la interfaz Producto
+  import { ProductoCardComponent } from '../producto-card/producto-card.component'; // Importamos el subcomponente
+  import { ProductoService } from '../producto.service'; // Importamos el servicio
+
+  @Component({
+    selector: 'app-producto-list',
+    standalone: true,
+    imports: [CommonModule, ProductoCardComponent],
+    templateUrl: './producto-list.component.html',
+    styleUrl: './producto-list.component.css'
+  })
+  export class ProductoListComponent implements OnInit {
+    // Inicializamos la propiedad como un array vacío
+    productos: Producto[] = [];
+
+    // Inyectamos el servicio en el constructor
+    constructor(private productoService: ProductoService) {}
+
+    // Usamos ngOnInit para obtener los datos del servicio
+    ngOnInit(): void {
+      this.productos = this.productoService.getProductos();
+    }
+  }
+  ```
+
+- **Plantilla (`producto-list.component.html`)**:
+
+  ```html
+  <div class="list-container">
+    <h2>Listado de Productos</h2>
+
+    <div class="product-grid">
+      <!-- Usamos el nuevo componente de tarjeta dentro del bucle `@for` -->
+      @for (producto of productos; track producto.id) {
+        <app-producto-card [producto]="producto" />
+      }
+      @empty {
+        <p class="no-products">No se encontraron productos.</p>
+      }
+    </div>
+  </div>
+  ```
+
+- **Estilos (`producto-list.component.css`)**:
+
+  ```css
+  .list-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f0f2f5;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2em;
+  }
+
+  /* Usamos CSS Grid para un diseño de tarjetas responsivo */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .no-products {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    grid-column: 1 / -1; /* Ocupa todo el ancho del grid */
+  }
+  ```
+
+**Prompt para IA**:
+
+> Crea un componente de Angular llamado `producto-list` que se encargue de mostrar una lista de productos. Este componente debe inyectar el `ProductoService` para obtener los datos. También, crea un subcomponente llamado `producto-card` que reciba un objeto `Producto` como `@Input()` para renderizar los detalles del producto de forma individual. La plantilla de `producto-list` debe usar el nuevo flujo de control `@for` para iterar sobre la lista y mostrar una `<app-producto-card>` por cada producto.
+
+### Paso 5: Crear un Formulario para Capturar Información
+
+Necesitaremos un formulario para agregar nuevos productos o editar los existentes. Aquí podemos usar la nueva sintaxis `@if` para mostrar u ocultar elementos de manera condicional.
+
+- **Comando**: `ng generate component producto-form --skip-tests`
+- **Lógica del componente (`producto-form.component.ts`)**:
+
+  ```typescript
+  import { Component, OnInit } from '@angular/core';
+  import { CommonModule } from '@angular/common';
+  import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+  @Component({
+    selector: 'app-producto-form',
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './producto-form.component.html',
+    styleUrl: './producto-form.component.css'
+  })
+  export class ProductoFormComponent implements OnInit {
+    productoForm: FormGroup;
+
+    // El FormBuilder simplifica la creación de formularios reactivos
+    constructor(private fb: FormBuilder) {
+      this.productoForm = this.fb.group({
+        nombre: ['', Validators.required],
+        precio: [null, [Validators.required, Validators.min(0)]],
+        imagenUrl: ['', Validators.required]
+      });
+    }
+
+    // ngOnInit se ejecuta una vez cuando el componente se inicializa
+    ngOnInit(): void {
+      // Aquí podríamos precargar datos de un producto si estuviéramos editando
+    }
+
+    onSubmit() {
+      // Verificamos si el formulario es válido antes de enviar
+      if (this.productoForm.valid) {
+        console.log('Formulario enviado:', this.productoForm.value);
+        // Aquí se enviaría el producto a la API del backend
+      }
+    }
+  }
+  ```
+
+- **Plantilla (`producto-form.component.html`)**:
+
+  ```html
+  <div class="form-container">
+    <h2>Formulario de Producto</h2>
+
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" type="text" formControlName="nombre">
+        <!-- El `@if` es la nueva sintaxis para mostrar u ocultar elementos -->
+        @if (productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched) {
+          <p class="error-message">El nombre es obligatorio.</p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="precio">Precio:</label>
+        <input id="precio" type="number" formControlName="precio">
+        @if (productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched) {
+          <p class="error-message">El precio es obligatorio y debe ser un número positivo.</p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="imagenUrl">URL de la Imagen:</label>
+        <input id="imagenUrl" type="text" formControlName="imagenUrl">
+        @if (productoForm.get('imagenUrl')?.invalid && productoForm.get('imagenUrl')?.touched) {
+          <p class="error-message">La URL de la imagen es obligatoria.</p>
+        }
+      </div>
+
+      <button type="submit" [disabled]="!productoForm.valid">Guardar Producto</button>
+    </form>
+  </div>
+  ```
+
+- **Estilos (`producto-form.component.css`)**:
+
+  ```css
+  .form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h2 {
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input[type="text"]:focus, input[type="number"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
+
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  button[type="submit"]:hover:not([disabled]) {
+    background-color: #0056b3;
+  }
+
+  button[type="submit"]:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+  }
+  ```
+
+**Prompt para IA**:
+
+> Genera un formulario HTML para un componente de Angular llamado `producto-form` usando formularios reactivos. Debe tener campos para el nombre (`nombre`), el precio (`precio`) y la URL de la imagen (`imagenUrl`) del producto. Incluye un botón para enviar el formulario. Asegúrate de incluir validaciones básicas para que todos los campos sean obligatorios y usa `@if` para mostrar mensajes de error. Incluye estilos CSS básicos para el formulario.
+# Clase 3: Conexión Frontend y Backend
+
+En esta clase, pondremos en práctica los conocimientos de las clases anteriores para establecer una conexión real entre nuestra aplicación frontend, desarrollada con Angular, y el backend que construimos con **Spring Boot**. El objetivo es que nuestra interfaz de usuario sea dinámica, segura y escalable.
+
+## 1. Integración entre Backend y Frontend
+
+### a. CORS (Cross-Origin Resource Sharing)
+
+Para que nuestra aplicación de Angular, que se ejecuta en un dominio (`localhost:4200`), pueda comunicarse con nuestra API de backend, que se ejecuta en otro dominio (`localhost:8080`), necesitamos habilitar CORS. Sin esta configuración, el navegador bloqueará las peticiones por seguridad.
+
+El backend debe configurar las cabeceras `Access-Control-Allow-Origin` para permitir las peticiones del frontend.
+
+### b. Configuración de CORS en Spring Boot
+
+Para habilitar CORS en nuestro backend de Spring Boot, la práctica recomendada es definir un `CorsFilter` como un bean en nuestra configuración. Esto asegura que la configuración de CORS se aplique a todas las peticiones de manera uniforme.
+
+- **Archivo**: `src/main/java/.../config/WebConfig.java`
+
+  ```java
+  package com.miaplicacion.config;
+
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.web.cors.CorsConfiguration;
+  import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+  import org.springframework.web.filter.CorsFilter;
+
+  @Configuration
+  public class WebConfig {
+
+      @Bean
+      public CorsFilter corsFilter() {
+          UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+          CorsConfiguration config = new CorsConfiguration();
+          config.setAllowCredentials(true);
+          config.addAllowedOrigin("http://localhost:4200"); // Permite peticiones desde el origen de Angular
+          config.addAllowedHeader("*");
+          config.addAllowedMethod("*"); // Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
+          source.registerCorsConfiguration("/**", config);
+          return new CorsFilter(source);
+      }
+  }
+  ```
+
+Este código crea un filtro de CORS que se aplicará a todas las rutas (`/**`). Le indica a Spring Boot que debe aceptar peticiones del origen `http://localhost:4200` y permite todos los métodos y cabeceras necesarios para la comunicación.
+
+**Prompt para IA**:
+
+> Crea una clase de configuración llamada `WebConfig` en el paquete `config`. Dentro de esta clase, genera un bean llamado `corsFilter` que devuelva una nueva instancia de `CorsFilter`. Configura este filtro para permitir peticiones del origen `http://localhost:4200` y para que acepte todos los métodos y cabeceras.
+
+### c. Consumo de APIs HTTP en Angular
+
+Utilizaremos el servicio `HttpClient` para manejar todas nuestras peticiones a la API. Este servicio es fundamental para la comunicación con el backend y maneja las peticiones de forma asíncrona usando Observables.
+
+#### Paso 1: Configurar `HttpClientModule` y el Enrutamiento
+
+Antes de poder usar el servicio `HttpClient`, debemos registrarlo como un proveedor en nuestra aplicación. Como estamos usando componentes standalone, el proveedor se agrega directamente en el archivo de configuración principal de la aplicación.
+
+Además, con la incorporación de un componente de login, es esencial configurar el enrutamiento para gestionar la navegación entre las diferentes vistas de la aplicación.
+
+- **Archivo: `src/app/app.config.ts`**
+
+  ```typescript
+  import { ApplicationConfig } from '@angular/core';
+  import { provideRouter } from '@angular/router';
+  import { provideHttpClient, withInterceptors } from '@angular/common/http';
+  import { authInterceptor } from './auth.interceptor';
+  import { routes } from './app.routes';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideRouter(routes), // Registramos las rutas
+      provideHttpClient(withInterceptors([authInterceptor])) // Lo agregamos como un proveedor en la configuración
+    ]
+  };
+  ```
+
+- **Archivo: `src/app/app.routes.ts`**
+
+  ```typescript
+  import { Routes } from '@angular/router';
+  import { LoginComponent } from './login/login.component';
+  import { ProductoComponent } from './producto/producto.component';
+  import { authGuard } from './auth.guard'; // Importamos el guard
+
+  export const routes: Routes = [
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'login', component: LoginComponent },
+      { path: 'productos', component: ProductoComponent, canActivate: [authGuard] }
+  ];
+  ```
+
+**Prompt para IA**:
+
+> Actualiza el archivo `src/app/app.config.ts`. El código debe importar `ApplicationConfig` de `@angular/core`, `provideRouter` de `@angular/router`, y `provideHttpClient` junto con `withInterceptors` de `@angular/common/http`. También debe importar el interceptor funcional `authInterceptor` desde `./auth.interceptor` y el arreglo de rutas `routes` desde `./app.routes`.En la propiedad `providers` debe registrar `provideRouter(routes)` y `provideHttpClient(withInterceptors([authInterceptor]))`.
+
+#### Paso 2: Actualizar el `ProductoService` con todos los métodos HTTP
+
+Ahora, modificaremos nuestro servicio para incluir los cuatro tipos de peticiones HTTP principales: `GET` para obtener datos, `POST` para crear, `PUT` para actualizar y `DELETE` para eliminar.
+
+```typescript
+// src/app/producto.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Producto } from './producto';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductoService {
+  private apiUrl = 'http://127.0.0.1:8080/api/productos';
+
+  constructor(private http: HttpClient) { }
+
+  // Obtener todos los productos
+  getProductos(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(this.apiUrl);
+  }
+
+  // Crear un nuevo producto
+  addProducto(producto: Producto): Observable<Producto> {
+    return this.http.post<Producto>(this.apiUrl, producto);
+  }
+
+  // Actualizar un producto existente
+  updateProducto(producto: Producto): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${producto.id}`, producto);
+  }
+
+  // Eliminar un producto por su ID
+  deleteProducto(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${producto.id}`);
+  }
+}
+```
+
+**Prompt para IA**:
+
+> Actualiza un servicio de Angular llamado `ProductoService` para que utilice `HttpClient` e implemente los cuatro métodos de peticiones REST: `getProductos()` (GET), `addProducto()` (POST), `updateProducto()` (PUT) y `deleteProducto()` (DELETE). Asegúrate de que las peticiones se dirijan a la URL `http://127.0.0.1:8080/api/productos` y de que los métodos manejen el paso del ID del producto para las peticiones de actualización y eliminación.
+
+## 2. Asegurando APIs
+
+La seguridad es fundamental para cualquier aplicación web, y se basa en dos pilares principales: autenticación y autorización. La autenticación es el proceso de verificar la identidad de un usuario (¿quién eres?), mientras que la autorización determina a qué recursos puede acceder ese usuario (¿qué puedes hacer?). Esto se logra comúnmente con JSON Web Tokens (JWT).
+
+### a. Backend (Spring Security)
+
+En el backend, **Spring Security** es el framework de facto para manejar la seguridad de las aplicaciones. Nos permite proteger los endpoints de la API, asegurando que solo las peticiones de usuarios autenticados y autorizados puedan acceder a ellos. La lógica de Spring Security intercepta las peticiones entrantes, valida el JWT y, basándose en la información del token (por ejemplo, los roles del usuario), decide si la petición debe ser procesada o rechazada con un error de acceso denegado.
+
+#### Implementación Completa de Seguridad con JWT en Spring Boot
+
+Para que la seguridad funcione, necesitas varios componentes que interactúen entre sí. Aquí están los archivos y su implementación.
+
+1. **Modelo de Usuario (`User.java`)**: Un modelo simple para representar a un usuario. En una aplicación real, este modelo se conectaría a una base de datos.
+
+    ```java
+    package com.miaplicacion.models;
+
+    import java.util.Collections;
+    import java.util.List;
+    import org.springframework.security.core.GrantedAuthority;
+    import org.springframework.security.core.authority.SimpleGrantedAuthority;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import java.util.Collection;
+
+    public class User implements UserDetails {
+
+        private String username;
+        private String password;
+
+        public User(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+
+        @Override
+        public String getPassword() {
+            return password;
+        }
+
+        @Override
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public boolean isAccountNonExpired() { return true; }
+
+        @Override
+        public boolean isAccountNonLocked() { return true; }
+
+        @Override
+        public boolean isCredentialsNonExpired() { return true; }
+
+        @Override
+        public boolean isEnabled() { return true; }
+    }
+    ```
+
+2. **Servicio de Detalles de Usuario (`UserDetailsServiceImpl.java`)**: Este servicio carga los detalles del usuario durante la autenticación. En este ejemplo simple, simulamos un usuario en memoria.
+
+    ```java
+    package com.miaplicacion.services;
+
+    import com.miaplicacion.models.User;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.security.core.userdetails.UserDetailsService;
+    import org.springframework.security.core.userdetails.UsernameNotFoundException;
+    import org.springframework.stereotype.Service;
+
+    @Service
+    public class UserDetailsServiceImpl implements UserDetailsService {
+
+        @Override
+        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+            // En un proyecto real, buscarías al usuario en una base de datos.
+            // Aquí, simulamos un usuario en memoria para la demostración.
+            if ("admin".equals(username)) {
+                return new User("admin", "{noop}password"); // {noop} es un prefijo para que Spring sepa que no hay encriptación.
+            }
+            throw new UsernameNotFoundException("Usuario no encontrado con username: " + username);
+        }
+    }
+    ```
+
+3. **Utilidad para JWT (`JwtUtil.java`)**: Una clase para generar, validar y extraer información de los tokens JWT.
+
+    ```java
+    package com.miaplicacion.security;
+
+    import io.jsonwebtoken.Claims;
+    import io.jsonwebtoken.Jwts;
+    import io.jsonwebtoken.SignatureAlgorithm;
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.stereotype.Component;
+    import java.util.Date;
+    import java.util.HashMap;
+    import java.util.Map;
+    import java.util.function.Function;
+
+    @Component
+    public class JwtUtil {
+
+        @Value("${jwt.secret}")
+        private String secret;
+
+        @Value("${jwt.expiration}")
+        private long expiration;
+
+        public String generateToken(UserDetails userDetails) {
+            Map<String, Object> claims = new HashMap<>();
+            return createToken(claims, userDetails.getUsername());
+        }
+
+        private String createToken(Map<String, Object> claims, String subject) {
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .setSubject(subject)
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                    .signWith(SignatureAlgorithm.HS256, secret)
+                    .compact();
+        }
+
+        public boolean validateToken(String token, UserDetails userDetails) {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }
+
+        public String extractUsername(String token) {
+            return extractClaim(token, Claims::getSubject);
+        }
+
+        public Date extractExpiration(String token) {
+            return extractClaim(token, Claims::getExpiration);
+        }
+
+        public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+            final Claims claims = extractAllClaims(token);
+            return claimsResolver.apply(claims);
+        }
+
+        private Claims extractAllClaims(String token) {
+            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        }
+
+        private boolean isTokenExpired(String token) {
+            return extractExpiration(token).before(new Date());
+        }
+    }
+    ```
+
+4. **Filtro para Peticiones JWT (`JwtRequestFilter.java`)**: Este filtro se ejecuta en cada petición HTTP para validar el token y autenticar al usuario si el token es válido.
+
+    ```java
+    package com.miaplicacion.security;
+
+    import com.miaplicacion.services.UserDetailsServiceImpl;
+    import jakarta.servlet.FilterChain;
+    import jakarta.servlet.ServletException;
+    import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+    import org.springframework.security.core.context.SecurityContextHolder;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+    import org.springframework.stereotype.Component;
+    import org.springframework.web.filter.OncePerRequestFilter;
+    import java.io.IOException;
+
+    @Component
+    public class JwtRequestFilter extends OncePerRequestFilter {
+
+        private final UserDetailsServiceImpl userDetailsService;
+        private final JwtUtil jwtUtil;
+
+        public JwtRequestFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+            this.userDetailsService = userDetailsService;
+            this.jwtUtil = jwtUtil;
+        }
+
+        @Override
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+                throws ServletException, IOException {
+
+            final String authorizationHeader = request.getHeader("Authorization");
+
+            String username = null;
+            String jwt = null;
+
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                jwt = authorizationHeader.substring(7);
+                username = jwtUtil.extractUsername(jwt);
+            }
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+                if (jwtUtil.validateToken(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+            filterChain.doFilter(request, response);
+        }
+    }
+    ```
+
+5. **Controlador de Autenticación (`AuthController.java`)**: Este es el endpoint que el frontend llamará para iniciar sesión y obtener un token JWT.
+
+    ```java
+    package com.miaplicacion.controllers;
+
+    import com.miaplicacion.models.AuthenticationRequestDto;
+    import com.miaplicacion.models.AuthenticationResponseDto;
+    import com.miaplicacion.security.JwtUtil;
+    import com.miaplicacion.services.UserDetailsServiceImpl;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.security.authentication.AuthenticationManager;
+    import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+    import org.springframework.security.core.userdetails.UserDetails;
+    import org.springframework.web.bind.annotation.PostMapping;
+    import org.springframework.web.bind.annotation.RequestBody;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+
+    @RestController
+    @RequestMapping("/api/auth")
+    public class AuthController {
+
+        private final AuthenticationManager authenticationManager;
+        private final UserDetailsServiceImpl userDetailsService;
+        private final JwtUtil jwtUtil;
+
+        public AuthController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
+            this.authenticationManager = authenticationManager;
+            this.userDetailsService = userDetailsService;
+            this.jwtUtil = jwtUtil;
+        }
+
+        @PostMapping("/login")
+        public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws Exception {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    authenticationRequestDto.getUsername(), authenticationRequestDto.getPassword()));
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequestDto.getUsername());
+            final String jwt = jwtUtil.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
+        }
+    }
+    ```
+
+6. **Clases Auxiliares para Autenticación**: Modelos para las peticiones y respuestas de autenticación.
+
+    ```java
+    // src/main/java/.../models/AuthenticationRequestDto.java
+    package com.miaplicacion.models;
+
+    import java.io.Serializable;
+
+    public record AuthenticationRequestDto(String username, String password) implements Serializable {}
+    ```
+
+    ```java
+    // src/main/java/.../models/AuthenticationResponseDto.java
+    package com.miaplicacion.models;
+
+    import java.io.Serializable;
+
+    public record AuthenticationResponseDto(String jwt) implements Serializable {}
+    ```
+
+7. **Configuración de Seguridad (`SecurityConfig.java`)**: El archivo de configuración principal de Spring Security, actualizado para usar los componentes anteriores.
+
+    ```java
+    package com.miaplicacion.config;
+
+    import com.miaplicacion.security.JwtRequestFilter;
+    import org.springframework.context.annotation.Bean;
+    import org.springframework.context.annotation.Configuration;
+    import org.springframework.security.authentication.AuthenticationManager;
+    import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+    import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+    import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+    import org.springframework.security.config.http.SessionCreationPolicy;
+    import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+    import org.springframework.security.crypto.password.PasswordEncoder;
+    import org.springframework.security.web.SecurityFilterChain;
+    import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+    @Configuration
+    @EnableWebSecurity
+    public class SecurityConfig {
+
+        private final JwtRequestFilter jwtRequestFilter;
+
+        public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+            this.jwtRequestFilter = jwtRequestFilter;
+        }
+
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authz -> authz
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+            return http.build();
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+            return authenticationConfiguration.getAuthenticationManager();
+        }
+    }
+    ```
+
+8. **Configuracion de parámetros de JWT (`src/main/resources/application.properties`)**
+
+    ```properties
+    # --- Configuración de seguridad JWT ---
+    # Clave secreta para firmar los tokens JWT. Es crucial mantener esta clave segura y en un entorno de producción debe ser una variable de entorno.
+    # Genera una clave segura de al menos 256 bits (por ejemplo, usando https://www.allkeysgenerator.com/)
+    jwt.secret=tu_clave_secreta_aqui_para_firmar_los_tokens_seguramente
+
+    # Tiempo de expiración del token JWT en segundos.
+    # En este ejemplo, el token expira en 3600 segundos (1 hora).
+    jwt.expiration=3600
+    ```
+
+**Prompt para IA**:
+
+> Implementa la seguridad completa del backend usando **Spring Security** y **JWT**. La implementación debe ser modular y estar dividida en los siguientes archivos y paquetes:
+>
+> 1. `SecurityConfig.java`: La clase de configuración principal de seguridad. Debe deshabilitar CSRF y configurar la gestión de sesiones como `STATELESS`. Permite el acceso público al endpoint `/api/auth/**` y requiere autenticación para todas las demás peticiones. Inyecta y agrega un filtro JWT (`JwtRequestFilter`) antes del filtro de autenticación de usuario y contraseña.
+> 2. `JwtRequestFilter.java`: Un filtro de peticiones que se ejecuta una vez por cada solicitud. Debe extraer el token JWT de la cabecera `Authorization`, validar el token usando `JwtUtil`, y autenticar al usuario en el contexto de seguridad de Spring si el token es válido.
+> 3. `JwtUtil.java`: Una clase de utilidad para generar, validar y extraer el nombre de usuario y la fecha de expiración de los tokens JWT. La clave secreta y el tiempo de expiración deben cargarse desde las propiedades de la aplicación (`application.properties`).
+> 4. `UserDetailsServiceImpl.java`: Un servicio que implementa `UserDetailsService`. En un método llamado `loadUserByUsername`, simula la carga de un usuario en memoria (`"admin"` con contraseña `"password"`) y, si no lo encuentra, lanza una excepción `UsernameNotFoundException`.
+> 5. `AuthController.java`: Un controlador REST con el endpoint `/api/auth/login` que recibe un `AuthenticationRequestDto`, autentica las credenciales, genera un token JWT con `JwtUtil` y lo devuelve en un `AuthenticationResponseDto`.
+> 6. **Clases Auxiliares para Autenticación**: Crea las clases `AuthenticationRequestDto` y `AuthenticationResponseDto` usando el patrón de **Java Records** para garantizar concisión e inmutabilidad.
+
+### b. Frontend (Angular)
+
+Desde el frontend, debemos gestionar el ciclo de vida de los tokens de seguridad y asegurar que la experiencia del usuario sea fluida y segura.
+
+- **Estrategia de Seguridad: JWT**: Después de que un usuario se autentica correctamente en el backend, este le devuelve un token JWT. Este token es esencialmente una credencial digital firmada. El frontend lo almacena de forma segura (por ejemplo, en el `localStorage` o `sessionStorage`) y lo envía en cada petición para demostrar que el usuario está logueado y tiene permiso.
+- **Uso de `Interceptors`**: En Angular, un **interceptor** es un servicio que se encarga de interceptar y modificar las peticiones HTTP que salen de nuestra aplicación, así como las respuestas que entran. Es un lugar perfecto para adjuntar automáticamente el token de autenticación a la cabecera de cada petición saliente sin tener que hacerlo manualmente en cada servicio.
+
+  ```typescript
+  // src/app/auth.interceptor.ts
+  import { HttpInterceptorFn } from '@angular/common/http';
+
+  export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    const authToken = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+    if (authToken) {
+      // Clona la petición y añade el token en la cabecera de autorización.
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${authToken}`)
+      });
+      return next(authReq);
+    }
+
+    // Si no hay token, continúa con la petición original.
+    return next(req);
+  };
+  ```
+
+Para que el usuario pueda interactuar con el sistema de autenticación, necesitamos un servicio que gestione el login y un componente para la interfaz, además de las rutas para navegar entre ellos.
+
+1. **Servicio de Autenticación (`auth.service.ts`)**: Este servicio se encargará de realizar la petición al backend, recibir el token JWT y almacenarlo en el navegador.
+
+    - **Archivo: `src/app/services/auth.service.ts`**
+
+      ```typescript
+      import { Injectable } from '@angular/core';
+      import { HttpClient } from '@angular/common/http';
+      import { Observable } from 'rxjs';
+      import { tap } from 'rxjs/operators';
+
+      /**
+       * Interfaz para la respuesta del backend tras un login exitoso.
+      */
+      interface AuthResponse {
+        jwt: string;
+      }
+
+      @Injectable({
+        providedIn: 'root'
+      })
+      export class AuthService {
+        private apiUrl = 'http://localhost:8080/api/auth';
+
+        constructor(private http: HttpClient) {}
+
+        /**
+         * Realiza una petición de login al backend.
+        * @param username El nombre de usuario.
+        * @param password La contraseña.
+        * @returns Un Observable con la respuesta del servidor.
+        */
+        login(username: string, password: string): Observable<AuthResponse> {
+          // La petición POST envía un objeto con el username y el password.
+          return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { username, password }).pipe(
+            tap((response: AuthResponse) => {
+              // Almacena el token en el localStorage al recibir una respuesta exitosa
+              localStorage.setItem('auth_token', response.jwt);
+            })
+          );
+        }
+
+        /**
+         * Verifica si el usuario está autenticado.
+        * @returns true si hay un token en el localStorage, de lo contrario false.
+        */
+        isAuthenticated(): boolean {
+          return !!localStorage.getItem('auth_token');
+        }
+
+        /**
+         * Cierra la sesión del usuario.
+        */
+        logout(): void {
+          localStorage.removeItem('auth_token');
+        }
+      }
+      ```
+
+2. **Componente de Login (`login.component.ts` y `.html`)**: Este componente proporciona la interfaz de usuario para que el usuario ingrese sus credenciales.
+
+    - **Archivo**: `src/app/login/login.component.ts`
+
+      ```typescript
+      import { Component, OnInit } from '@angular/core';
+      import { CommonModule } from '@angular/common';
+      import { FormsModule } from '@angular/forms';
+      import { Router } from '@angular/router';
+      import { AuthService } from '../services/auth.service';
+
+      @Component({
+        selector: 'app-login',
+        standalone: true,
+        imports: [CommonModule, FormsModule],
+        templateUrl: './login.component.html',
+        styleUrl: './login.component.css'
+      })
+      export class LoginComponent implements OnInit {
+        username = '';
+        password = '';
+        loginError = false;
+
+        constructor(private authService: AuthService, private router: Router) { }
+
+        ngOnInit(): void {
+          // Si el usuario ya está autenticado, redirigir a la página principal
+          if (this.authService.isAuthenticated()) {
+            this.router.navigate(['/productos']);
+          }
+        }
+
+        onLogin(): void {
+          this.loginError = false;
+          this.authService.login(this.username, this.password).subscribe({
+            next: () => {
+              // Redirigir a la página principal tras un login exitoso
+              this.router.navigate(['/productos']);
+            },
+            error: (err) => {
+              console.error('Login failed', err);
+              this.loginError = true;
+            }
+          });
+        }
+      }
+      ```
+
+    - **Archivo**: `src/app/login/login.component.html`
+
+      ```html
+      <div class="login-container">
+        <div class="login-card">
+          <h2 class="login-header">Iniciar Sesión</h2>
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+            <div class="form-group">
+              <label for="username" class="form-label">Usuario</label>
+              <input type="text" id="username" name="username" [(ngModel)]="username" required
+                    class="form-input">
+            </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" id="password" name="password" [(ngModel)]="password" required
+                    class="form-input">
+            </div>
+            <div *ngIf="loginError" class="error-message">
+              Credenciales incorrectas. Inténtalo de nuevo.
+            </div>
+            <div class="form-actions">
+              <button type="submit"
+                      class="login-button"
+                      [disabled]="!loginForm.form.valid">
+                Ingresar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      ```
+
+    - **Archivo**: `src/app/login/login.component.css`
+
+      ```css
+      .login-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background-color: #f3f4f6;
+          padding: 1rem;
+      }
+
+      .login-card {
+          background-color: #fff;
+          padding: 2rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 24rem;
+      }
+
+      .login-header {
+          font-size: 1.875rem;
+          font-weight: bold;
+          text-align: center;
+          color: #1f2937;
+          margin-bottom: 1.5rem;
+      }
+
+      .form-group {
+          margin-bottom: 1rem;
+      }
+
+      .form-label {
+          display: block;
+          color: #374151;
+          font-size: 0.875rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+      }
+
+      .form-input {
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+          appearance: none;
+          border: 1px solid #d1d5db;
+          border-radius: 0.5rem;
+          width: 100%;
+          padding: 0.5rem 0.75rem;
+          color: #4b5563;
+          line-height: 1.25;
+          transition: all 0.2s;
+      }
+
+      .form-input:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+          border-color: #6366f1;
+      }
+
+      .error-message {
+          text-align: center;
+          font-size: 0.875rem;
+          color: #dc2626;
+          margin-bottom: 1rem;
+      }
+
+      .form-actions {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+
+      .login-button {
+          width: 100%;
+          background-color: #4f46e5;
+          color: #fff;
+          font-weight: bold;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          cursor: pointer;
+      }
+
+      .login-button:hover {
+          background-color: #4338ca;
+      }
+
+      .login-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+      }
+      ```
+
+3. **Guards de Rutas en Angular**
+
+    Los **Guards** (guardianes) son una característica de Angular que controla el acceso a las rutas. Son como porteros que deciden si un usuario puede navegar a una ruta específica. Se ejecutan antes de que se complete la navegación y son ideales para tareas como:
+
+    - Verificar si un usuario está autenticado antes de permitirle ver una página.
+    - Confirmar si el usuario desea abandonar una página (por ejemplo, si tiene cambios no guardados en un formulario).
+    - Resolver datos de una API antes de que se cargue la ruta.
+
+    Al igual que los interceptores, los guards ahora tienen una sintaxis funcional más moderna, lo que los hace más sencillos de implementar.
+
+    - **Archivo**: `src/app/auth.guard.ts`
+
+      ```typescript
+      import { CanActivateFn, Router } from '@angular/router';
+      import { inject } from '@angular/core';
+      import { AuthService } from './services/auth.service';
+
+      export const authGuard: CanActivateFn = (route, state) => {
+        const authService = inject(AuthService);
+        const router = inject(Router);
+
+        // Inyectamos el servicio de autenticación
+        if (authService.isAuthenticated()) {
+          return true; // Si el usuario está autenticado, permite el acceso a la ruta
+        } else {
+          router.navigate(['/login']); // Si no está autenticado, redirige al login
+          return false; // Deniega el acceso
+        }
+      };
+      ```
+
+    - **Archivo**: `src/app/app.routes.ts`
+
+      ```typescript
+      import { Routes } from '@angular/router';
+      import { LoginComponent } from './login/login.component';
+      import { ProductoComponent } from './producto/producto.component';
+      import { authGuard } from './auth.guard'; // Importamos el guard
+
+      export const routes: Routes = [
+          { path: '', redirectTo: '/login', pathMatch: 'full' },
+          { path: 'login', component: LoginComponent },
+          { path: 'productos', component: ProductoComponent, canActivate: [authGuard] }
+      ];
+      ```
+
+    En el archivo `app.routes.ts`, usamos `canActivate: [authGuard]` para proteger la ruta de `/productos`, asegurando que nadie pueda acceder a ella sin haber iniciado sesión.
+
+**Prompt para IA**:
+
+> Genera los siguientes componentes de Angular para asegurar la API:
+>
+> 1. Un servicio **AuthService** que maneje el inicio y cierre de sesión, y que almacene el JWT en el localStorage. Este servicio debe tener un método `isAuthenticated()` para verificar la sesión.
+> 2. Un **authInterceptor** que adjunte el JWT al encabezado `Authorization` de todas las peticiones salientes.
+> 3. Un **authGuard** para proteger las rutas, redirigiendo al usuario al login si no está autenticado. Utiliza la sintaxis funcional moderna y asegúrate de que el interceptor y el guard se registren correctamente en `app.config.ts`."
+
+## 3. Mejores Prácticas y Futuro
+
+### Pruebas de Software: La base de la calidad
+
+Un software robusto y escalable se construye sobre una base sólida de pruebas. La práctica de **Test-Driven Development (TDD)**, aunque a menudo vista como un proceso complejo, garantiza que cada componente y función se comporte como se espera. Se recomienda implementar tres tipos de pruebas principales:
+
+- **Pruebas unitarias**: Validan el comportamiento de las unidades de código más pequeñas, como funciones o métodos individuales. Herramientas como **JUnit** (en Java) o **Jasmine** y **Jest** (en JavaScript) son esenciales.
+- **Pruebas de integración**: Confirman que los diferentes componentes de la aplicación (por ejemplo, un servicio y un controlador) trabajan juntos de manera correcta.
+- **Pruebas de extremo a extremo (E2E)**: Simulan el flujo completo de un usuario a través de la aplicación, desde la interfaz de usuario hasta el backend, garantizando que todo el sistema funciona sin problemas.
+
+### Código Limpio, Mantenimiento y Escalabilidad
+
+Mantener un código limpio y una estructura bien definida es clave para el desarrollo profesional. Esto incluye:
+
+- **Modularidad**: Organizar el código en módulos y componentes independientes para reducir la complejidad y facilitar la reutilización.
+- **Patrones de diseño**: Utilizar patrones como el **Repository Pattern** para abstraer la capa de datos, lo que hace el código más flexible y fácil de mantener.
+- **Documentación**: Comentar el código y los flujos de trabajo complejos para que otros desarrolladores puedan entenderlo rápidamente.
+
+### Seguridad Adicional: Más allá de la autenticación
+
+Además de la seguridad con JWT, una aplicación robusta debe protegerse de otras vulnerabilidades comunes:
+
+- **Validación y sanitización de entradas**: Proteger la aplicación de ataques de inyección (SQL, NoSQL, etc.) validando y limpiando todos los datos que ingresan.
+- **Protección contra ataques XSS y CSRF**: Implementar cabeceras de seguridad y tokens anti-CSRF para prevenir que scripts maliciosos o peticiones no deseadas comprometan la seguridad de los usuarios.
+
+### El Futuro de la IA en el Desarrollo de Software
+
+La Inteligencia Artificial ya está transformando el desarrollo de software, pasando de ser una curiosidad a una herramienta indispensable. En el presente, herramientas como los **asistentes de código** (por ejemplo, GitHub Copilot) y los **generadores de pruebas automáticas** aceleran la codificación.
+
+En el futuro, la IA podría tomar un rol más protagónico, ayudando con:
+
+- **Análisis de seguridad avanzado**: Identificar patrones de vulnerabilidad en el código antes de que sean explotados.
+- **Refactorización y optimización automatizada**: Sugerir y aplicar mejoras al rendimiento del código de manera inteligente.
+- **Diseño de UI/UX asistido**: Generar prototipos funcionales basados en descripciones de lenguaje natural.
+
+Esto no significa que los desarrolladores serán reemplazados, sino que el rol del programador evolucionará. La IA asumirá tareas repetitivas y de baja complejidad, permitiendo a los desarrolladores enfocarse en la arquitectura, la resolución de problemas complejos y la **creatividad**.
