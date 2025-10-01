@@ -1,6 +1,14 @@
+/**
+ * Componente BookItem - Representa una fila de libro en la tabla
+ * Muestra la información del libro y proporciona botones para editar y eliminar
+ */
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { deleteLibro } from '../services/api';
 
+/**
+ * Paleta de colores para los diferentes estados de los libros
+ * Define el color de texto y fondo para cada estado posible
+ */
 const estadoPalette = {
   Disponible: { color: '#5b5b5b', background: 'rgba(162, 197, 242, 0.35)' },
   Prestado: { color: '#5b5b5b', background: 'rgba(242, 173, 133, 0.35)' },
@@ -9,6 +17,10 @@ const estadoPalette = {
 };
 
 export default function BookItem({ book, onEdit, onDeleted }) {
+  /**
+   * Maneja la eliminación de un libro
+   * Solicita confirmación antes de proceder con la eliminación
+   */
   const del = async () => {
     if (!confirm('¿Estás seguro de que quieres eliminar este libro?')) return;
     try {
@@ -20,6 +32,9 @@ export default function BookItem({ book, onEdit, onDeleted }) {
     }
   };
 
+  /**
+   * Retorna el emoji correspondiente al estado del libro
+   */
   const getStatusIcon = (estado) => {
     switch (estado) {
       case 'Disponible':
@@ -33,6 +48,7 @@ export default function BookItem({ book, onEdit, onDeleted }) {
     }
   };
 
+  // Obtiene los colores correspondientes al estado del libro
   const badgeColors = estadoPalette[book.estado] || estadoPalette.default;
 
   return (
@@ -44,10 +60,13 @@ export default function BookItem({ book, onEdit, onDeleted }) {
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(162, 197, 242, 0.12)')}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
     >
+      {/* Columnas de información del libro */}
       <td style={{ padding: 16, color: 'var(--color-text)', fontWeight: 500 }}>{book.id}</td>
       <td style={{ padding: 16, fontWeight: 600, color: 'var(--color-text)' }}>{book.titulo}</td>
       <td style={{ padding: 16, color: 'var(--color-text)' }}>{book.autor}</td>
       <td style={{ padding: 16, color: 'var(--color-text)' }}>{book.anio}</td>
+
+      {/* Badge de estado con icono y colores dinámicos */}
       <td style={{ padding: 16 }}>
         <span
           style={{
@@ -65,6 +84,8 @@ export default function BookItem({ book, onEdit, onDeleted }) {
           {getStatusIcon(book.estado)} {book.estado}
         </span>
       </td>
+
+      {/* Botones de acción: Editar y Eliminar */}
       <td style={{ padding: 16 }}>
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
           <button

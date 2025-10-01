@@ -1,16 +1,25 @@
+/**
+ * Componente BookList - Lista principal de libros con funcionalidades de búsqueda, filtrado y ordenamiento
+ * Gestiona el estado de los libros, las búsquedas, filtros y la edición
+ */
 import React, { useEffect, useState } from 'react'; // eslint-disable-line no-unused-vars
 import { getLibros, searchLibros } from '../services/api';
 import BookForm from './bookform';
 import BookItem from './bookitem';
 
 export default function BookList(){
-  const [books, setBooks] = useState([]);
-  const [editing, setEditing] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('id');
-  const [sortOrder, setSortOrder] = useState('ASC');
-  const [statusFilter, setStatusFilter] = useState('');
+  // Estados para gestionar la lista de libros y sus operaciones
+  const [books, setBooks] = useState([]);           // Lista de libros a mostrar
+  const [editing, setEditing] = useState(null);     // Libro en edición (null si no hay edición activa)
+  const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda actual
+  const [sortBy, setSortBy] = useState('id');       // Campo por el cual ordenar
+  const [sortOrder, setSortOrder] = useState('ASC'); // Orden ascendente o descendente
+  const [statusFilter, setStatusFilter] = useState(''); // Filtro por estado del libro
 
+  /**
+   * Carga todos los libros desde el servidor
+   * Aplica ordenamiento y filtros según los parámetros actuales
+   */
   const load = async () => {
     try {
       const res = await getLibros(sortBy, sortOrder, statusFilter ? 'estado' : null, statusFilter || null);
@@ -20,6 +29,10 @@ export default function BookList(){
     }
   };
 
+  /**
+   * Busca libros por título
+   * Si el término está vacío, recarga todos los libros
+   */
   const search = async (term) => {
     try {
       if (term.trim() === '') {
@@ -33,19 +46,29 @@ export default function BookList(){
     }
   };
 
+  /**
+   * Efecto que recarga los libros cuando cambian los criterios de ordenamiento o filtrado
+   */
   useEffect(() => {
     load();
   }, [sortBy, sortOrder, statusFilter]);
 
+  // Funciones callback para actualizar el estado local tras operaciones CRUD
   const created = (libro) => setBooks((prev) => [libro, ...prev]);
   const updated = (libro) => setBooks((prev) => prev.map((item) => (item.id === libro.id ? libro : item)));
   const deleted = (id) => setBooks((prev) => prev.filter((item) => item.id !== id));
 
+  /**
+   * Maneja el envío del formulario de búsqueda
+   */
   const handleSearch = (e) => {
     e.preventDefault();
     search(searchTerm);
   };
 
+  /**
+   * Resetea todos los filtros, búsquedas y ordenamientos a sus valores por defecto
+   */
   const resetAll = () => {
     setSearchTerm('');
     setStatusFilter('');
@@ -56,9 +79,11 @@ export default function BookList(){
 
   return (
     <div className="card-surface" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
+      {/* Formulario para crear o editar libros */}
       <BookForm editing={editing} onCreated={created} onUpdated={updated} onCancel={() => setEditing(null)} />
 
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        {/* Panel de herramientas de búsqueda y filtrado */}
         <div
           className="card-surface"
           style={{
@@ -71,6 +96,7 @@ export default function BookList(){
             Herramientas de búsqueda y ordenamiento
           </h3>
 
+          {/* Barra de búsqueda y botón de limpiar filtros */}
           <div style={{ display: 'flex', gap: 16, marginBottom: 18, flexWrap: 'wrap' }}>
             <form onSubmit={handleSearch} style={{ display: 'flex', gap: 12, flex: 1, minWidth: 280 }}>
               <input
@@ -122,7 +148,9 @@ export default function BookList(){
             </button>
           </div>
 
+          {/* Controles de ordenamiento y filtrado por estado */}
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            {/* Selectores de ordenamiento */}
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Ordenar por</label>
               <select
@@ -158,6 +186,7 @@ export default function BookList(){
               </select>
             </div>
 
+            {/* Selector de filtro por estado */}
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Estado</label>
               <select
@@ -180,6 +209,7 @@ export default function BookList(){
           </div>
         </div>
 
+        {/* Indicador de resultados actuales */}
         <div className="card-surface" style={{ padding: 18, background: 'rgba(254, 252, 239, 0.85)' }}>
           <span style={{ color: 'var(--color-text)', fontSize: '0.95rem', fontWeight: 500 }}>
             Mostrando <strong>{books.length}</strong> libro{books.length !== 1 ? 's' : ''}
@@ -188,6 +218,7 @@ export default function BookList(){
           </span>
         </div>
 
+        {/* Tabla de libros */}
         <div style={{ borderRadius: 18, overflow: 'hidden', boxShadow: 'var(--shadow-soft)' }}>
           <table>
             <thead>

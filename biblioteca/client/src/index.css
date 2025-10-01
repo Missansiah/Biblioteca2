@@ -1,35 +1,52 @@
+/**
+ * Estilos globales de la aplicación Biblioteca Digital
+ * Define variables CSS, temas (claro/oscuro), y estilos base para todos los componentes
+ */
+
+/* ========================================
+   VARIABLES CSS - Tema Claro (por defecto)
+   ======================================== */
 :root {
-  --color-text: #5b5b5b;
-  --color-primary: #a2c5f2;
-  --color-secondary: #f2ad85;
-  --color-accent: #fedbd6;
-  --color-background: #fefcef;
-  --color-card: #ffffff;
-  --shadow-soft: 0 12px 30px rgba(91, 91, 91, 0.08);
+  --color-text: #5b5b5b;              /* Color principal del texto */
+  --color-primary: #a2c5f2;           /* Color primario (azul suave) */
+  --color-secondary: #f2ad85;         /* Color secundario (naranja suave) */
+  --color-accent: #fedbd6;            /* Color de acento (rosa suave) */
+  --color-background: #fefcef;        /* Color de fondo principal */
+  --color-card: #ffffff;              /* Color de fondo de tarjetas */
+  --shadow-soft: 0 12px 30px rgba(91, 91, 91, 0.08); /* Sombra suave */
 }
 
-/* Modo Oscuro - Paleta mejorada con mejor contraste */
+/* ========================================
+   TEMA OSCURO - Variables CSS
+   ======================================== */
 body.dark-mode {
-  --color-text: #f0f0f0;
-  --color-primary: #8bb4e8;
-  --color-secondary: #f5b88a;
-  --color-accent: #f4c4be;
-  --color-background: #0f0f0f;
-  --color-card: #1e1e1e;
-  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.6);
+  --color-text: #f0f0f0;              /* Texto claro para fondo oscuro */
+  --color-primary: #8bb4e8;           /* Azul más brillante */
+  --color-secondary: #f5b88a;         /* Naranja más cálido */
+  --color-accent: #f4c4be;            /* Rosa más suave */
+  --color-background: #0f0f0f;        /* Fondo muy oscuro */
+  --color-card: #1e1e1e;              /* Tarjetas gris oscuro */
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
   background: linear-gradient(135deg, rgba(139, 180, 232, 0.15), rgba(244, 196, 190, 0.15));
 }
 
+/* ========================================
+   ESTILOS BASE
+   ======================================== */
+
+/* Aplicar box-sizing a todos los elementos */
 * {
   box-sizing: border-box;
 }
 
+/* Asegurar que html, body y root ocupen toda la altura */
 html,
 body,
 #root {
   height: 100%;
 }
 
+/* Estilos del body principal */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -41,25 +58,34 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Títulos principales */
 h1 {
   color: var(--color-text);
 }
 
+/* Enlaces */
 a {
   color: inherit;
 }
 
+/* Botones - Estilos base y efectos de hover */
 button {
   font-family: inherit;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
+/* Botones deshabilitados */
 button:disabled {
   cursor: not-allowed;
   opacity: 0.7;
 }
 
+/* ========================================
+   TABLAS
+   ======================================== */
+
+/* Estilos base de tabla */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -67,6 +93,7 @@ table {
   box-shadow: var(--shadow-soft);
 }
 
+/* Celdas de tabla */
 th,
 td {
   border: 1px solid rgba(242, 173, 133, 0.35);
@@ -75,12 +102,13 @@ td {
   color: var(--color-text);
 }
 
+/* Encabezados de tabla */
 th {
   background: rgba(162, 197, 242, 0.35);
   font-weight: 600;
 }
 
-/* Mejor contraste para tablas en modo oscuro */
+/* Tablas en modo oscuro - Mejor contraste */
 body.dark-mode th {
   background: rgba(139, 180, 232, 0.25);
 }
@@ -90,6 +118,11 @@ body.dark-mode td {
   border: 1px solid rgba(139, 180, 232, 0.2);
 }
 
+/* ========================================
+   CONTENEDORES Y LAYOUT
+   ======================================== */
+
+/* Contenedor principal de la aplicación */
 .app-container {
   min-height: 100%;
   padding: 32px 20px 60px;
@@ -100,10 +133,12 @@ body.dark-mode td {
   position: relative;
 }
 
+/* Contenedor principal en modo oscuro */
 body.dark-mode .app-container {
   background: linear-gradient(180deg, rgba(15, 15, 15, 0.98), rgba(30, 30, 30, 0.95));
 }
 
+/* Contenedor de página con ancho máximo */
 .page-shell {
   width: 100%;
   max-width: 1120px;
@@ -113,6 +148,11 @@ body.dark-mode .app-container {
   gap: 28px;
 }
 
+/* ========================================
+   COMPONENTES REUTILIZABLES
+   ======================================== */
+
+/* Tarjetas con superficie elevada */
 .card-surface {
   background: var(--color-card);
   border-radius: 16px;
@@ -121,13 +161,13 @@ body.dark-mode .app-container {
   padding: 24px;
 }
 
+/* Tarjetas en modo oscuro */
 body.dark-mode .card-surface {
-  /* Borde más sutil y con tono azulado en modo oscuro para mejor contraste */
   border: 1px solid rgba(139, 180, 232, 0.3);
-  /* Opcional: ligeramente elevar la tarjeta en oscuro para separar del fondo */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
+/* Badges informativos */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -138,7 +178,11 @@ body.dark-mode .card-surface {
   font-size: 0.85rem;
 }
 
-/* Botón de Modo Oscuro */
+/* ========================================
+   BOTÓN DE ALTERNANCIA DE TEMA
+   ======================================== */
+
+/* Botón flotante para cambiar entre modo claro y oscuro */
 .dark-mode-toggle {
   position: fixed;
   top: 20px;
@@ -158,61 +202,78 @@ body.dark-mode .card-surface {
   transition: all 0.3s ease;
 }
 
+/* Efecto hover del botón de tema */
 .dark-mode-toggle:hover {
   transform: scale(1.1) rotate(15deg);
   box-shadow: 0 8px 20px rgba(162, 197, 242, 0.4);
 }
 
+/* Botón de tema en modo oscuro */
 body.dark-mode .dark-mode-toggle {
   border-color: var(--color-primary);
   background: var(--color-card);
 }
 
+/* Hover del botón en modo oscuro */
 body.dark-mode .dark-mode-toggle:hover {
   box-shadow: 0 8px 20px rgba(139, 180, 232, 0.7);
   border-color: var(--color-primary);
 }
 
+/* Efecto al hacer clic */
 .dark-mode-toggle:active {
   transform: scale(0.95);
 }
 
-/* Transiciones suaves para todos los elementos */
+/* ========================================
+   TRANSICIONES GLOBALES
+   ======================================== */
+
+/* Transiciones suaves para cambios de tema */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Transiciones específicas para elementos interactivos */
 button, a {
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease,
               background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* ========================================
+   MEJORAS DE CONTRASTE - MODO CLARO
+   ======================================== */
 
-/* Mejoras de contraste para textos en modo claro */
+/* Títulos con mejor contraste */
 h3 {
   color: #2d2d2d !important;
 }
 
+/* Etiquetas de formulario */
 label {
   color: #3a3a3a !important;
 }
 
+/* Texto dentro de tarjetas */
 .card-surface span {
   color: #4a4a4a !important;
 }
 
+/* Texto en negrita dentro de tarjetas */
 .card-surface strong {
   color: #2d2d2d !important;
 }
 
-/* Mejoras de contraste para textos específicos en modo oscuro */
+/* ========================================
+   MEJORAS DE CONTRASTE - MODO OSCURO
+   ======================================== */
+
+/* Títulos en modo oscuro */
 body.dark-mode h3 {
   color: #2d2d2d !important;
 }
 
-/* Selector para el texto "Mostrando X libros".
-   Añade reglas para varias clases comunes que podrían usarse para ese texto
-   (.books-count, .showing-books). Ajusta según la clase real en el markup. */
+/* Texto de contadores y estadísticas */
 body.dark-mode .books-count,
 body.dark-mode .showing-books,
 body.dark-mode .books-count span {
@@ -220,15 +281,17 @@ body.dark-mode .books-count span {
   font-weight: 600;
 }
 
-/* Etiquetas y elementos pequeños dentro de tarjetas */
+/* Etiquetas en modo oscuro */
 body.dark-mode label {
   color: #3a3a3a !important;
 }
 
+/* Texto dentro de tarjetas en modo oscuro */
 body.dark-mode .card-surface span {
   color: #2d2d2d !important;
 }
 
+/* Texto en negrita dentro de tarjetas en modo oscuro */
 body.dark-mode .card-surface strong {
   color: #1a1a1a !important;
 }

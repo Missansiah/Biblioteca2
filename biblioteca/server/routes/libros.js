@@ -1,47 +1,123 @@
-// server/routes/libros.js
+/**
+ * Rutas de la API de Libros
+ * Define todos los endpoints relacionados con la gestión de libros
+ * Incluye validaciones de datos usando express-validator
+ */
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
 const ctrl = require('../controllers/librosController');
 
-// Validaciones para crear y actualizar libros
+/* ========================================
+   VALIDACIONES
+   ======================================== */
+
+/**
+ * Validaciones para crear y actualizar libros
+ * Asegura que los datos recibidos cumplan con los requisitos
+ */
 const libroValidations = [
-  body('titulo').notEmpty().withMessage('El título es obligatorio').isLength({ min: 1, max: 255 }).withMessage('El título debe tener entre 1 y 255 caracteres'),
-  body('autor').notEmpty().withMessage('El autor es obligatorio').isLength({ min: 1, max: 255 }).withMessage('El autor debe tener entre 1 y 255 caracteres'),
-  body('genero').notEmpty().withMessage('El género es obligatorio').isLength({ min: 1, max: 100 }).withMessage('El género debe tener entre 1 y 100 caracteres'),
-  body('anio').isInt({ min: 1000, max: new Date().getFullYear() + 1 }).withMessage('El año debe ser un número válido'),
-  body('isbn').notEmpty().withMessage('El ISBN es obligatorio').isLength({ min: 10, max: 20 }).withMessage('El ISBN debe tener entre 10 y 20 caracteres'),
-  body('estado').optional().isIn(['Disponible', 'Prestado', 'En reparación']).withMessage('El estado debe ser: Disponible, Prestado o En reparación')
+  body('titulo')
+    .notEmpty().withMessage('El título es obligatorio')
+    .isLength({ min: 1, max: 255 }).withMessage('El título debe tener entre 1 y 255 caracteres'),
+
+  body('autor')
+    .notEmpty().withMessage('El autor es obligatorio')
+    .isLength({ min: 1, max: 255 }).withMessage('El autor debe tener entre 1 y 255 caracteres'),
+
+  body('genero')
+    .notEmpty().withMessage('El género es obligatorio')
+    .isLength({ min: 1, max: 100 }).withMessage('El género debe tener entre 1 y 100 caracteres'),
+
+  body('anio')
+    .isInt({ min: 1000, max: new Date().getFullYear() + 1 })
+    .withMessage('El año debe ser un número válido'),
+
+  body('isbn')
+    .notEmpty().withMessage('El ISBN es obligatorio')
+    .isLength({ min: 10, max: 20 }).withMessage('El ISBN debe tener entre 10 y 20 caracteres'),
+
+  body('estado')
+    .optional()
+    .isIn(['Disponible', 'Prestado', 'En reparación'])
+    .withMessage('El estado debe ser: Disponible, Prestado o En reparación')
 ];
 
-// GET /api/libros
+/* ========================================
+   RUTAS CRUD BÁSICAS
+   ======================================== */
+
+/**
+ * GET /api/libros
+ * Obtiene todos los libros con opciones de ordenamiento y filtrado
+ * Query params: sortBy, sortOrder, filterBy, filterValue
+ */
 router.get('/', ctrl.obtenerLibros);
 
-// POST /api/libros
+/**
+ * POST /api/libros
+ * Crea un nuevo libro
+ * Body: { titulo, autor, genero, anio, isbn, estado }
+ */
 router.post('/', libroValidations, ctrl.crearLibro);
 
-// PUT /api/libros/:id
+/**
+ * PUT /api/libros/:id
+ * Actualiza un libro existente
+ * Params: id del libro
+ * Body: { titulo, autor, genero, anio, isbn, estado }
+ */
 router.put('/:id', libroValidations, ctrl.actualizarLibro);
 
-// DELETE /api/libros/:id
+/**
+ * DELETE /api/libros/:id
+ * Elimina un libro
+ * Params: id del libro
+ */
 router.delete('/:id', ctrl.borrarLibro);
 
-// GET /api/libros/buscar?titulo=...
+/* ========================================
+   RUTAS DE BÚSQUEDA Y FILTRADO
+   ======================================== */
+
+/**
+ * GET /api/libros/buscar?titulo=...
+ * Busca libros por título (búsqueda parcial)
+ * Query params: titulo
+ */
 router.get('/buscar', ctrl.buscarLibros);
 
-// GET /api/libros/generos - Obtener lista de géneros
+/**
+ * GET /api/libros/generos
+ * Obtiene la lista de géneros únicos disponibles
+ */
 router.get('/generos', ctrl.obtenerGeneros);
 
-// GET /api/libros/autores - Obtener lista de autores
+/**
+ * GET /api/libros/autores
+ * Obtiene la lista de autores únicos disponibles
+ */
 router.get('/autores', ctrl.obtenerAutores);
 
-// GET /api/libros/filtrar/genero/:genero - Filtrar por género
+/**
+ * GET /api/libros/filtrar/genero/:genero
+ * Filtra libros por género específico
+ * Params: genero
+ */
 router.get('/filtrar/genero/:genero', ctrl.filtrarPorGenero);
 
-// GET /api/libros/filtrar/autor/:autor - Filtrar por autor
+/**
+ * GET /api/libros/filtrar/autor/:autor
+ * Filtra libros por autor específico
+ * Params: autor
+ */
 router.get('/filtrar/autor/:autor', ctrl.filtrarPorAutor);
 
-// GET /api/libros/filtrar/estado/:estado - Filtrar por estado
+/**
+ * GET /api/libros/filtrar/estado/:estado
+ * Filtra libros por estado (Disponible, Prestado, En reparación)
+ * Params: estado
+ */
 router.get('/filtrar/estado/:estado', ctrl.filtrarPorEstado);
 
 module.exports = router;
