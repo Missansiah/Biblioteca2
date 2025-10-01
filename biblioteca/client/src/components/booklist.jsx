@@ -1,5 +1,5 @@
-﻿import React, { useEffect, useState } from 'react';
-import { getLibros, searchLibros, filterByStatus } from '../services/api';
+import React, { useEffect, useState } from 'react'; // eslint-disable-line no-unused-vars
+import { getLibros, searchLibros } from '../services/api';
 import BookForm from './bookform';
 import BookItem from './bookitem';
 
@@ -15,7 +15,9 @@ export default function BookList(){
     try {
       const res = await getLibros(sortBy, sortOrder, statusFilter ? 'estado' : null, statusFilter || null);
       setBooks(res.data);
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const search = async (term) => {
@@ -26,16 +28,18 @@ export default function BookList(){
       }
       const res = await searchLibros(term);
       setBooks(res.data);
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  useEffect(()=>{ 
-    load(); 
+  useEffect(() => {
+    load();
   }, [sortBy, sortOrder, statusFilter]);
 
-  const created = b => setBooks(prev => [b, ...prev]);
-  const updated = b => setBooks(prev => prev.map(x => x.id === b.id ? b : x));
-  const deleted = id => setBooks(prev => prev.filter(x => x.id !== id));
+  const created = (libro) => setBooks((prev) => [libro, ...prev]);
+  const updated = (libro) => setBooks((prev) => prev.map((item) => (item.id === libro.id ? libro : item)));
+  const deleted = (id) => setBooks((prev) => prev.filter((item) => item.id !== id));
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -51,179 +55,159 @@ export default function BookList(){
   };
 
   return (
-    <div style={{ padding: 20, maxWidth: 1200, margin: '0 auto' }}>
+    <div className="card-surface" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
       <BookForm editing={editing} onCreated={created} onUpdated={updated} onCancel={() => setEditing(null)} />
-      
-      {/* Panel de controles simplificado */}
-      <div style={{ 
-        marginBottom: 25, 
-        padding: 20, 
-        backgroundColor: '#ffffff', 
-        borderRadius: 12, 
-        border: '1px solid #e1e5e9',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
-        <h3 style={{ margin: '0 0 20px 0', color: '#2c3e50', fontSize: '18px', fontWeight: '600' }}>
-          🔍 Búsqueda y Ordenamiento
-        </h3>
-        
-        {/* Primera fila: Búsqueda */}
-        <div style={{ display: 'flex', gap: 15, alignItems: 'center', marginBottom: 15, flexWrap: 'wrap' }}>
-          <form onSubmit={handleSearch} style={{ display: 'flex', gap: 10, alignItems: 'center', flex: 1, minWidth: 300 }}>
-            <input
-              type="text"
-              placeholder="Buscar por título..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ 
-                padding: 12, 
-                border: '2px solid #e1e5e9', 
-                borderRadius: 8, 
-                flex: 1,
-                fontSize: '14px',
-                transition: 'border-color 0.3s ease'
+
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div
+          className="card-surface"
+          style={{
+            background: 'linear-gradient(135deg, rgba(162, 197, 242, 0.55), rgba(254, 219, 214, 0.65))',
+            border: 'none',
+            padding: 28
+          }}
+        >
+          <h3 style={{ margin: '0 0 20px 0', color: 'var(--color-text)', fontSize: '1.15rem', fontWeight: 600 }}>
+            Herramientas de búsqueda y ordenamiento
+          </h3>
+
+          <div style={{ display: 'flex', gap: 16, marginBottom: 18, flexWrap: 'wrap' }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', gap: 12, flex: 1, minWidth: 280 }}>
+              <input
+                type="text"
+                placeholder="Buscar por título..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  padding: 12,
+                  border: '2px solid rgba(162, 197, 242, 0.65)',
+                  borderRadius: 12,
+                  flex: 1,
+                  fontSize: '0.95rem',
+                  color: 'var(--color-text)',
+                  background: 'rgba(254, 252, 239, 0.8)'
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  padding: '12px 22px',
+                  background: 'var(--color-primary)',
+                  color: 'var(--color-text)',
+                  border: 'none',
+                  borderRadius: 12,
+                  fontSize: '0.95rem',
+                  fontWeight: 600,
+                  boxShadow: '0 6px 12px rgba(162, 197, 242, 0.35)'
+                }}
+              >
+                Buscar
+              </button>
+            </form>
+
+            <button
+              onClick={resetAll}
+              style={{
+                padding: '12px 22px',
+                background: 'var(--color-secondary)',
+                color: 'var(--color-text)',
+                border: 'none',
+                borderRadius: 12,
+                fontSize: '0.95rem',
+                fontWeight: 600,
+                boxShadow: '0 6px 12px rgba(242, 173, 133, 0.3)'
               }}
-              onFocus={(e) => e.target.style.borderColor = '#007bff'}
-              onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
-            />
-            <button 
-              type="submit" 
-              style={{ 
-                padding: '12px 20px', 
-                backgroundColor: '#007bff', 
-                color: 'white', 
-                border: 'none', 
-                borderRadius: 8, 
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '500',
-                transition: 'background-color 0.3s ease'
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
             >
-              🔍 Buscar
+              Limpiar filtros
             </button>
-          </form>
-          
-          <button 
-            onClick={resetAll}
-            style={{ 
-              padding: '12px 20px', 
-              backgroundColor: '#6c757d', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: 8, 
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500',
-              transition: 'background-color 0.3s ease'
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#545b62'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
-          >
-            🔄 Limpiar
-          </button>
-        </div>
-
-        {/* Segunda fila: Ordenamiento y filtro de estado */}
-        <div style={{ display: 'flex', gap: 15, alignItems: 'center', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <label style={{ fontWeight: '600', color: '#495057', fontSize: '14px' }}>Ordenar:</label>
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-              style={{ 
-                padding: 8, 
-                border: '2px solid #e1e5e9', 
-                borderRadius: 6,
-                fontSize: '14px',
-                backgroundColor: 'white'
-              }}
-            >
-              <option value="id">ID</option>
-              <option value="titulo">Título</option>
-              <option value="autor">Autor</option>
-              <option value="anio">Año</option>
-            </select>
-            
-            <select 
-              value={sortOrder} 
-              onChange={(e) => setSortOrder(e.target.value)}
-              style={{ 
-                padding: 8, 
-                border: '2px solid #e1e5e9', 
-                borderRadius: 6,
-                fontSize: '14px',
-                backgroundColor: 'white'
-              }}
-            >
-              <option value="ASC">⬆️ Ascendente</option>
-              <option value="DESC">⬇️ Descendente</option>
-            </select>
           </div>
 
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <label style={{ fontWeight: '600', color: '#495057', fontSize: '14px' }}>Estado:</label>
-            <select 
-              value={statusFilter} 
-              onChange={(e) => setStatusFilter(e.target.value)}
-              style={{ 
-                padding: 8, 
-                border: '2px solid #e1e5e9', 
-                borderRadius: 6,
-                fontSize: '14px',
-                backgroundColor: 'white'
-              }}
-            >
-              <option value="">Todos</option>
-              <option value="Disponible">✅ Disponible</option>
-              <option value="Prestado">📖 Prestado</option>
-              <option value="En reparación">🔧 En reparación</option>
-            </select>
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+              <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Ordenar por</label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{
+                  padding: 10,
+                  borderRadius: 12,
+                  border: '2px solid rgba(162, 197, 242, 0.6)',
+                  background: 'var(--color-card)',
+                  color: 'var(--color-text)'
+                }}
+              >
+                <option value="id">ID</option>
+                <option value="titulo">Título</option>
+                <option value="autor">Autor</option>
+                <option value="anio">Año</option>
+              </select>
+
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                style={{
+                  padding: 10,
+                  borderRadius: 12,
+                  border: '2px solid rgba(162, 197, 242, 0.6)',
+                  background: 'var(--color-card)',
+                  color: 'var(--color-text)'
+                }}
+              >
+                <option value="ASC">Ascendente</option>
+                <option value="DESC">Descendente</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+              <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Estado</label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                style={{
+                  padding: 10,
+                  borderRadius: 12,
+                  border: '2px solid rgba(254, 219, 214, 0.6)',
+                  background: 'var(--color-card)',
+                  color: 'var(--color-text)'
+                }}
+              >
+                <option value="">Todos</option>
+                <option value="Disponible">Disponible</option>
+                <option value="Prestado">Prestado</option>
+                <option value="En reparación">En reparación</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Información de resultados */}
-      <div style={{ 
-        marginBottom: 15, 
-        padding: 10, 
-        backgroundColor: '#f8f9fa', 
-        borderRadius: 6,
-        border: '1px solid #e9ecef'
-      }}>
-        <span style={{ color: '#495057', fontSize: '14px', fontWeight: '500' }}>
-          📚 Mostrando <strong>{books.length}</strong> libro{books.length !== 1 ? 's' : ''}
-          {sortBy !== 'id' || sortOrder !== 'ASC' ? ` • Ordenado por ${sortBy} (${sortOrder === 'ASC' ? '⬆️' : '⬇️'})` : ''}
-          {statusFilter ? ` • Estado: ${statusFilter}` : ''}
-        </span>
-      </div>
+        <div className="card-surface" style={{ padding: 18, background: 'rgba(254, 252, 239, 0.85)' }}>
+          <span style={{ color: 'var(--color-text)', fontSize: '0.95rem', fontWeight: 500 }}>
+            Mostrando <strong>{books.length}</strong> libro{books.length !== 1 ? 's' : ''}
+            {sortBy !== 'id' || sortOrder !== 'ASC' ? ` • Ordenado por ${sortBy} (${sortOrder})` : ''}
+            {statusFilter ? ` • Estado: ${statusFilter}` : ''}
+          </span>
+        </div>
 
-      {/* Tabla de libros */}
-      <div style={{ 
-        backgroundColor: 'white', 
-        borderRadius: 12, 
-        border: '1px solid #e1e5e9',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        overflow: 'hidden'
-      }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f8f9fa' }}>
-              <th style={{ padding: 15, textAlign: 'left', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>ID</th>
-              <th style={{ padding: 15, textAlign: 'left', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>Título</th>
-              <th style={{ padding: 15, textAlign: 'left', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>Autor</th>
-              <th style={{ padding: 15, textAlign: 'left', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>Año</th>
-              <th style={{ padding: 15, textAlign: 'left', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>Estado</th>
-              <th style={{ padding: 15, textAlign: 'center', borderBottom: '2px solid #e1e5e9', color: '#495057', fontWeight: '600' }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map(b => <BookItem key={b.id} book={b} onEdit={(bk)=>setEditing(bk)} onDeleted={deleted} />)}
-          </tbody>
-        </table>
-      </div>
+        <div style={{ borderRadius: 18, overflow: 'hidden', boxShadow: 'var(--shadow-soft)' }}>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Año</th>
+                <th>Estado</th>
+                <th style={{ textAlign: 'center' }}>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {books.map((book) => (
+                <BookItem key={book.id} book={book} onEdit={(item) => setEditing(item)} onDeleted={deleted} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   );
 }

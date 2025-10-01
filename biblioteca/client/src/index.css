@@ -1,24 +1,236 @@
-/* Estilos base para la app */
-html, body, #root {
+:root {
+  --color-text: #5b5b5b;
+  --color-primary: #a2c5f2;
+  --color-secondary: #f2ad85;
+  --color-accent: #fedbd6;
+  --color-background: #fefcef;
+  --color-card: #ffffff;
+  --shadow-soft: 0 12px 30px rgba(91, 91, 91, 0.08);
+}
+
+/* Modo Oscuro - Paleta mejorada con mejor contraste */
+body.dark-mode {
+  --color-text: #f0f0f0;
+  --color-primary: #8bb4e8;
+  --color-secondary: #f5b88a;
+  --color-accent: #f4c4be;
+  --color-background: #0f0f0f;
+  --color-card: #1e1e1e;
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, rgba(139, 180, 232, 0.15), rgba(244, 196, 190, 0.15));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, rgba(162, 197, 242, 0.35), rgba(254, 219, 214, 0.45));
+  color: var(--color-text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
+h1 {
+  color: var(--color-text);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-soft);
 }
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+
+th,
+td {
+  border: 1px solid rgba(242, 173, 133, 0.35);
+  padding: 12px 14px;
+  text-align: left;
+  color: var(--color-text);
 }
+
 th {
-  background: #f4f4f4;
+  background: rgba(162, 197, 242, 0.35);
+  font-weight: 600;
+}
+
+/* Mejor contraste para tablas en modo oscuro */
+body.dark-mode th {
+  background: rgba(139, 180, 232, 0.25);
+}
+
+body.dark-mode th,
+body.dark-mode td {
+  border: 1px solid rgba(139, 180, 232, 0.2);
+}
+
+.app-container {
+  min-height: 100%;
+  padding: 32px 20px 60px;
+  display: flex;
+  justify-content: flex-start;
+  background: linear-gradient(180deg, rgba(254, 252, 239, 0.95), rgba(254, 219, 214, 0.45));
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+body.dark-mode .app-container {
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.98), rgba(30, 30, 30, 0.95));
+}
+
+.page-shell {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.card-surface {
+  background: var(--color-card);
+  border-radius: 16px;
+  border: 1px solid rgba(254, 219, 214, 0.8);
+  box-shadow: var(--shadow-soft);
+  padding: 24px;
+}
+
+body.dark-mode .card-surface {
+  /* Borde más sutil y con tono azulado en modo oscuro para mejor contraste */
+  border: 1px solid rgba(139, 180, 232, 0.3);
+  /* Opcional: ligeramente elevar la tarjeta en oscuro para separar del fondo */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* Botón de Modo Oscuro */
+.dark-mode-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  background: var(--color-card);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-soft);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 8px 20px rgba(162, 197, 242, 0.4);
+}
+
+body.dark-mode .dark-mode-toggle {
+  border-color: var(--color-primary);
+  background: var(--color-card);
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+  box-shadow: 0 8px 20px rgba(139, 180, 232, 0.7);
+  border-color: var(--color-primary);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Transiciones suaves para todos los elementos */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+button, a {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease,
+              background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
+/* Mejoras de contraste para textos en modo claro */
+h3 {
+  color: #2d2d2d !important;
+}
+
+label {
+  color: #3a3a3a !important;
+}
+
+.card-surface span {
+  color: #4a4a4a !important;
+}
+
+.card-surface strong {
+  color: #2d2d2d !important;
+}
+
+/* Mejoras de contraste para textos específicos en modo oscuro */
+body.dark-mode h3 {
+  color: #2d2d2d !important;
+}
+
+/* Selector para el texto "Mostrando X libros".
+   Añade reglas para varias clases comunes que podrían usarse para ese texto
+   (.books-count, .showing-books). Ajusta según la clase real en el markup. */
+body.dark-mode .books-count,
+body.dark-mode .showing-books,
+body.dark-mode .books-count span {
+  color: #e8e8e8 !important;
+  font-weight: 600;
+}
+
+/* Etiquetas y elementos pequeños dentro de tarjetas */
+body.dark-mode label {
+  color: #3a3a3a !important;
+}
+
+body.dark-mode .card-surface span {
+  color: #2d2d2d !important;
+}
+
+body.dark-mode .card-surface strong {
+  color: #1a1a1a !important;
 }
 
 

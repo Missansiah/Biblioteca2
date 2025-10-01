@@ -1,5 +1,12 @@
-﻿import React from 'react';
+import React from 'react'; // eslint-disable-line no-unused-vars
 import { deleteLibro } from '../services/api';
+
+const estadoPalette = {
+  Disponible: { color: '#5b5b5b', background: 'rgba(162, 197, 242, 0.35)' },
+  Prestado: { color: '#5b5b5b', background: 'rgba(242, 173, 133, 0.35)' },
+  'En reparación': { color: '#5b5b5b', background: 'rgba(254, 219, 214, 0.6)' },
+  default: { color: '#5b5b5b', background: 'rgba(91, 91, 91, 0.15)' }
+};
 
 export default function BookItem({ book, onEdit, onDeleted }) {
   const del = async () => {
@@ -7,83 +14,86 @@ export default function BookItem({ book, onEdit, onDeleted }) {
     try {
       await deleteLibro(book.id);
       onDeleted(book.id);
-    } catch (err) { console.error(err); alert('Error al eliminar'); }
+    } catch (err) {
+      console.error(err);
+      alert('Error al eliminar');
+    }
   };
 
   const getStatusIcon = (estado) => {
-    switch(estado) {
-      case 'Disponible': return '✅';
-      case 'Prestado': return '📖';
-      case 'En reparación': return '🔧';
-      default: return '❓';
+    switch (estado) {
+      case 'Disponible':
+        return '✅';
+      case 'Prestado':
+        return '📖';
+      case 'En reparación':
+        return '🔧';
+      default:
+        return '❓';
     }
   };
 
-  const getStatusColor = (estado) => {
-    switch(estado) {
-      case 'Disponible': return '#28a745';
-      case 'Prestado': return '#ffc107';
-      case 'En reparación': return '#dc3545';
-      default: return '#6c757d';
-    }
-  };
+  const badgeColors = estadoPalette[book.estado] || estadoPalette.default;
 
   return (
-    <tr style={{ 
-      borderBottom: '1px solid #e9ecef',
-      transition: 'background-color 0.2s ease'
-    }}
-    onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+    <tr
+      style={{
+        borderBottom: '1px solid rgba(254, 219, 214, 0.5)',
+        transition: 'background-color 0.2s ease'
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(162, 197, 242, 0.12)')}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
     >
-      <td style={{ padding: 15, color: '#6c757d', fontWeight: '500' }}>{book.id}</td>
-      <td style={{ padding: 15, fontWeight: '500', color: '#2c3e50' }}>{book.titulo}</td>
-      <td style={{ padding: 15, color: '#495057' }}>{book.autor}</td>
-      <td style={{ padding: 15, color: '#495057' }}>{book.anio}</td>
-      <td style={{ padding: 15 }}>
-        <span style={{ 
-          color: getStatusColor(book.estado),
-          fontWeight: '500',
-          fontSize: '14px'
-        }}>
+      <td style={{ padding: 16, color: 'var(--color-text)', fontWeight: 500 }}>{book.id}</td>
+      <td style={{ padding: 16, fontWeight: 600, color: 'var(--color-text)' }}>{book.titulo}</td>
+      <td style={{ padding: 16, color: 'var(--color-text)' }}>{book.autor}</td>
+      <td style={{ padding: 16, color: 'var(--color-text)' }}>{book.anio}</td>
+      <td style={{ padding: 16 }}>
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '6px 14px',
+            borderRadius: 999,
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: badgeColors.color,
+            background: badgeColors.background
+          }}
+        >
           {getStatusIcon(book.estado)} {book.estado}
         </span>
       </td>
-      <td style={{ padding: 15, textAlign: 'center' }}>
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
-          <button 
+      <td style={{ padding: 16 }}>
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+          <button
             onClick={() => onEdit(book)}
-            style={{ 
-              padding: '6px 12px', 
-              backgroundColor: '#007bff', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: 6, 
-              cursor: 'pointer',
-              fontSize: '12px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s ease'
+            style={{
+              padding: '8px 14px',
+              backgroundColor: 'var(--color-primary)',
+              color: 'var(--color-text)',
+              border: 'none',
+              borderRadius: 10,
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              boxShadow: '0 6px 12px rgba(162, 197, 242, 0.25)'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
           >
             ✏️ Editar
           </button>
-          <button 
+          <button
             onClick={del}
-            style={{ 
-              padding: '6px 12px', 
-              backgroundColor: '#dc3545', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: 6, 
-              cursor: 'pointer',
-              fontSize: '12px',
-              fontWeight: '500',
-              transition: 'background-color 0.2s ease'
+            style={{
+              padding: '8px 14px',
+              backgroundColor: 'var(--color-accent)',
+              color: 'var(--color-text)',
+              border: 'none',
+              borderRadius: 10,
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              boxShadow: '0 6px 12px rgba(254, 219, 214, 0.35)'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#c82333'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#dc3545'}
           >
             🗑️ Eliminar
           </button>
