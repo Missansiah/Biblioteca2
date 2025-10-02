@@ -1,56 +1,42 @@
-/**
- * Estilos globales de la aplicación Biblioteca Digital
- * Define variables CSS, temas (claro/oscuro), y estilos base para todos los componentes
- */
+@import url('https://fonts.cdnfonts.com/css/itc-avant-garde-gothic');
 
-/* ========================================
-   VARIABLES CSS - Tema Claro (por defecto)
-   ======================================== */
 :root {
-  --color-text: #5b5b5b;              /* Color principal del texto */
-  --color-primary: #a2c5f2;           /* Color primario (azul suave) */
-  --color-secondary: #f2ad85;         /* Color secundario (naranja suave) */
-  --color-accent: #fedbd6;            /* Color de acento (rosa suave) */
-  --color-background: #fefcef;        /* Color de fondo principal */
-  --color-card: #ffffff;              /* Color de fondo de tarjetas */
-  --shadow-soft: 0 12px 30px rgba(91, 91, 91, 0.08); /* Sombra suave */
+  --color-text: #5b5b5b;
+  --color-text-soft: #767676;
+  --color-primary: #a2c5f2;
+  --color-secondary: #f2ad85;
+  --color-accent: #fedbd6;
+  --color-background: #fefcef;
+  --color-card: #ffffff;
+  --shadow-soft: 0 12px 30px rgba(91, 91, 91, 0.08);
 }
 
-/* ========================================
-   TEMA OSCURO - Variables CSS
-   ======================================== */
 body.dark-mode {
-  --color-text: #f0f0f0;              /* Texto claro para fondo oscuro */
-  --color-primary: #8bb4e8;           /* Azul más brillante */
-  --color-secondary: #f5b88a;         /* Naranja más cálido */
-  --color-accent: #f4c4be;            /* Rosa más suave */
-  --color-background: #0f0f0f;        /* Fondo muy oscuro */
-  --color-card: #1e1e1e;              /* Tarjetas gris oscuro */
-  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
-  background: linear-gradient(135deg, rgba(139, 180, 232, 0.15), rgba(244, 196, 190, 0.15));
+  --color-text: #f2f3f7;
+  --color-text-soft: #c0c9d8;
+  --color-primary: #8bb4e8;
+  --color-secondary: #f5b88a;
+  --color-accent: #f4c4be;
+  --color-background: #0f0f0f;
+  --color-card: #1e1e1e;
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, rgba(139, 180, 232, 0.15), rgba(244, 196, 190, 0.18));
 }
 
-/* ========================================
-   ESTILOS BASE
-   ======================================== */
-
-/* Aplicar box-sizing a todos los elementos */
 * {
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Asegurar que html, body y root ocupen toda la altura */
 html,
 body,
 #root {
   height: 100%;
 }
 
-/* Estilos del body principal */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'ITC Avant Garde Gothic', 'Avant Garde', 'Century Gothic', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, rgba(162, 197, 242, 0.35), rgba(254, 219, 214, 0.45));
@@ -58,34 +44,44 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Títulos principales */
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--color-text);
+  margin-top: 0;
+  font-family: inherit;
 }
 
-/* Enlaces */
+p {
+  color: var(--color-text-soft, var(--color-text));
+}
+
 a {
   color: inherit;
+  text-decoration: none;
 }
 
-/* Botones - Estilos base y efectos de hover */
 button {
   font-family: inherit;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  border: none;
+  color: var(--color-text);
+  background: var(--color-card);
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(91, 91, 91, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, color 0.3s ease;
 }
 
-/* Botones deshabilitados */
 button:disabled {
   cursor: not-allowed;
   opacity: 0.7;
+  box-shadow: none;
 }
 
-/* ========================================
-   TABLAS
-   ======================================== */
-
-/* Estilos base de tabla */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -93,7 +89,6 @@ table {
   box-shadow: var(--shadow-soft);
 }
 
-/* Celdas de tabla */
 th,
 td {
   border: 1px solid rgba(242, 173, 133, 0.35);
@@ -102,27 +97,20 @@ td {
   color: var(--color-text);
 }
 
-/* Encabezados de tabla */
 th {
   background: rgba(162, 197, 242, 0.35);
   font-weight: 600;
 }
 
-/* Tablas en modo oscuro - Mejor contraste */
 body.dark-mode th {
   background: rgba(139, 180, 232, 0.25);
 }
 
 body.dark-mode th,
 body.dark-mode td {
-  border: 1px solid rgba(139, 180, 232, 0.2);
+  border: 1px solid rgba(139, 180, 232, 0.22);
 }
 
-/* ========================================
-   CONTENEDORES Y LAYOUT
-   ======================================== */
-
-/* Contenedor principal de la aplicación */
 .app-container {
   min-height: 100%;
   padding: 32px 20px 60px;
@@ -133,12 +121,10 @@ body.dark-mode td {
   position: relative;
 }
 
-/* Contenedor principal en modo oscuro */
 body.dark-mode .app-container {
-  background: linear-gradient(180deg, rgba(15, 15, 15, 0.98), rgba(30, 30, 30, 0.95));
+  background: linear-gradient(180deg, rgba(15, 15, 15, 0.96), rgba(30, 30, 30, 0.92));
 }
 
-/* Contenedor de página con ancho máximo */
 .page-shell {
   width: 100%;
   max-width: 1120px;
@@ -148,11 +134,6 @@ body.dark-mode .app-container {
   gap: 28px;
 }
 
-/* ========================================
-   COMPONENTES REUTILIZABLES
-   ======================================== */
-
-/* Tarjetas con superficie elevada */
 .card-surface {
   background: var(--color-card);
   border-radius: 16px;
@@ -161,13 +142,11 @@ body.dark-mode .app-container {
   padding: 24px;
 }
 
-/* Tarjetas en modo oscuro */
 body.dark-mode .card-surface {
   border: 1px solid rgba(139, 180, 232, 0.3);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Badges informativos */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -178,11 +157,6 @@ body.dark-mode .card-surface {
   font-size: 0.85rem;
 }
 
-/* ========================================
-   BOTÓN DE ALTERNANCIA DE TEMA
-   ======================================== */
-
-/* Botón flotante para cambiar entre modo claro y oscuro */
 .dark-mode-toggle {
   position: fixed;
   top: 20px;
@@ -202,98 +176,20 @@ body.dark-mode .card-surface {
   transition: all 0.3s ease;
 }
 
-/* Efecto hover del botón de tema */
 .dark-mode-toggle:hover {
   transform: scale(1.1) rotate(15deg);
   box-shadow: 0 8px 20px rgba(162, 197, 242, 0.4);
 }
 
-/* Botón de tema en modo oscuro */
 body.dark-mode .dark-mode-toggle {
   border-color: var(--color-primary);
   background: var(--color-card);
 }
 
-/* Hover del botón en modo oscuro */
 body.dark-mode .dark-mode-toggle:hover {
   box-shadow: 0 8px 20px rgba(139, 180, 232, 0.7);
-  border-color: var(--color-primary);
 }
 
-/* Efecto al hacer clic */
 .dark-mode-toggle:active {
   transform: scale(0.95);
 }
-
-/* ========================================
-   TRANSICIONES GLOBALES
-   ======================================== */
-
-/* Transiciones suaves para cambios de tema */
-* {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Transiciones específicas para elementos interactivos */
-button, a {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease,
-              background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-/* ========================================
-   MEJORAS DE CONTRASTE - MODO CLARO
-   ======================================== */
-
-/* Títulos con mejor contraste */
-h3 {
-  color: #2d2d2d !important;
-}
-
-/* Etiquetas de formulario */
-label {
-  color: #3a3a3a !important;
-}
-
-/* Texto dentro de tarjetas */
-.card-surface span {
-  color: #4a4a4a !important;
-}
-
-/* Texto en negrita dentro de tarjetas */
-.card-surface strong {
-  color: #2d2d2d !important;
-}
-
-/* ========================================
-   MEJORAS DE CONTRASTE - MODO OSCURO
-   ======================================== */
-
-/* Títulos en modo oscuro */
-body.dark-mode h3 {
-  color: #2d2d2d !important;
-}
-
-/* Texto de contadores y estadísticas */
-body.dark-mode .books-count,
-body.dark-mode .showing-books,
-body.dark-mode .books-count span {
-  color: #e8e8e8 !important;
-  font-weight: 600;
-}
-
-/* Etiquetas en modo oscuro */
-body.dark-mode label {
-  color: #3a3a3a !important;
-}
-
-/* Texto dentro de tarjetas en modo oscuro */
-body.dark-mode .card-surface span {
-  color: #2d2d2d !important;
-}
-
-/* Texto en negrita dentro de tarjetas en modo oscuro */
-body.dark-mode .card-surface strong {
-  color: #1a1a1a !important;
-}
-
-

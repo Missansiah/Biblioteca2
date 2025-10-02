@@ -52,31 +52,32 @@ async function getById(id) {
 
 /**
  * Crea un nuevo libro en la base de datos
- * @param {Object} data - Datos del libro { titulo, autor, genero, anio, isbn, estado }
+ * @param {Object} data - Datos del libro { titulo, autor, genero, anio, isbn, estado, imagen_url }
  * @returns {Promise<Object>} Libro creado con su ID asignado
  */
 async function createLibro(data) {
-  const { titulo, autor, genero, anio, isbn, estado } = data;
+  const { titulo, autor, genero, anio, isbn, estado, imagen_url } = data;
+  const libroEstado = estado || 'Disponible';
   const [res] = await pool.query(
-    'INSERT INTO libros (titulo, autor, genero, anio, isbn, estado) VALUES (?, ?, ?, ?, ?, ?)',
-    [titulo, autor, genero, anio, isbn, estado || 'Disponible']
+    'INSERT INTO libros (titulo, autor, genero, anio, isbn, estado, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [titulo, autor, genero, anio, isbn, libroEstado, imagen_url || null]
   );
-  return getById(res.insertId);
+  return { id: res.insertId, ...data, estado: libroEstado };
 }
 
 /**
  * Actualiza un libro existente
  * @param {number} id - ID del libro a actualizar
- * @param {Object} data - Nuevos datos del libro { titulo, autor, genero, anio, isbn, estado }
+ * @param {Object} data - Datos actualizados del libro
  * @returns {Promise<Object>} Libro actualizado
  */
 async function updateLibro(id, data) {
-  const { titulo, autor, genero, anio, isbn, estado } = data;
+  const { titulo, autor, genero, anio, isbn, estado, imagen_url } = data;
   await pool.query(
-    'UPDATE libros SET titulo=?, autor=?, genero=?, anio=?, isbn=?, estado=? WHERE id=?',
-    [titulo, autor, genero, anio, isbn, estado, id]
+    'UPDATE libros SET titulo = ?, autor = ?, genero = ?, anio = ?, isbn = ?, estado = ?, imagen_url = ? WHERE id = ?',
+    [titulo, autor, genero, anio, isbn, estado, imagen_url || null, id]
   );
-  return getById(id);
+  return { id, ...data };
 }
 
 /**
@@ -86,7 +87,6 @@ async function updateLibro(id, data) {
  */
 async function deleteLibro(id) {
   await pool.query('DELETE FROM libros WHERE id = ?', [id]);
-  return;
 }
 
 /* ========================================

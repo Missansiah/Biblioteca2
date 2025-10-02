@@ -1,42 +1,23 @@
-/**
- * Componente BookForm - Formulario para crear y editar libros
- * Maneja tanto la creación de nuevos libros como la edición de existentes
- * Incluye validación de campos obligatorios y manejo de errores
- */
 import React, { useEffect, useState } from 'react'; // eslint-disable-line no-unused-vars
 import { createLibro, updateLibro } from '../services/api';
 
 export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
-  // Estado del formulario con valores por defecto
-  const [form, setForm] = useState({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible' });
-  const [isSubmitting, setIsSubmitting] = useState(false); // Previene envíos múltiples
+  const [form, setForm] = useState({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible', imagen_url:'' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * Efecto que actualiza el formulario cuando se selecciona un libro para editar
-   * Si editing es null, resetea el formulario a valores vacíos
-   */
   useEffect(()=> {
     if (editing) {
       setForm(editing);
     } else {
-      setForm({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible' });
+      setForm({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible', imagen_url:'' });
     }
   }, [editing]);
 
-  /**
-   * Actualiza el estado del formulario cuando cambia un campo
-   */
   const change = e => setForm({...form, [e.target.name]: e.target.value });
 
-  /**
-   * Maneja el envío del formulario
-   * Valida campos obligatorios y envía la petición al servidor
-   * Diferencia entre crear un nuevo libro o actualizar uno existente
-   */
   const submit = async (e) => {
     e.preventDefault();
 
-    // Validación de campos obligatorios
     if (!form.titulo || !form.autor || !form.isbn) {
       alert('Por favor completa título, autor e ISBN');
       return;
@@ -45,19 +26,16 @@ export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
     setIsSubmitting(true);
     try {
       if (editing) {
-        // Actualizar libro existente
         const res = await updateLibro(editing.id, form);
         onUpdated(res.data);
         onCancel();
       } else {
-        // Crear nuevo libro
         const res = await createLibro(form);
         onCreated(res.data);
-        setForm({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible' });
+        setForm({ titulo:'', autor:'', genero:'', anio:'', isbn:'', estado:'Disponible', imagen_url:'' });
       }
     } catch (err) {
       console.error(err);
-      // Manejo específico de error de ISBN duplicado
       if (err.response && err.response.status === 409) {
         alert('Error: El ISBN ya existe en la base de datos');
       } else {
@@ -92,7 +70,6 @@ export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
       </h3>
 
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {/* Grid responsivo de campos del formulario */}
         <div
           style={{
             display: 'grid',
@@ -100,13 +77,13 @@ export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
             gap: 18
           }}
         >
-          {/* Campos de texto dinámicos */}
           {[
             { label: 'Título *', name: 'titulo', placeholder: 'Ingresa el título del libro' },
             { label: 'Autor *', name: 'autor', placeholder: 'Nombre del autor' },
             { label: 'Género', name: 'genero', placeholder: 'Ej: Ficción, Historia...' },
             { label: 'Año', name: 'anio', type: 'number', placeholder: 'Año de publicación' },
-            { label: 'ISBN *', name: 'isbn', placeholder: 'Código ISBN único' }
+            { label: 'ISBN *', name: 'isbn', placeholder: 'Código ISBN único' },
+            { label: 'URL de Imagen', name: 'imagen_url', placeholder: 'https://ejemplo.com/imagen.jpg' }
           ].map((field) => (
             <div key={field.name}>
               <label
@@ -139,7 +116,6 @@ export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
             </div>
           ))}
 
-          {/* Selector de estado del libro */}
           <div>
             <label
               style={{
@@ -173,9 +149,7 @@ export default function BookForm({ editing, onCreated, onUpdated, onCancel }) {
           </div>
         </div>
 
-        {/* Botones de acción */}
         <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-          {/* Botón cancelar solo visible en modo edición */}
           {editing && (
             <button
               type="button"

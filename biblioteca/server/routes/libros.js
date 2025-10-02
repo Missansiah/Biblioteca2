@@ -17,22 +17,6 @@ const ctrl = require('../controllers/librosController');
  * Asegura que los datos recibidos cumplan con los requisitos
  */
 const libroValidations = [
-  body('titulo')
-    .notEmpty().withMessage('El título es obligatorio')
-    .isLength({ min: 1, max: 255 }).withMessage('El título debe tener entre 1 y 255 caracteres'),
-
-  body('autor')
-    .notEmpty().withMessage('El autor es obligatorio')
-    .isLength({ min: 1, max: 255 }).withMessage('El autor debe tener entre 1 y 255 caracteres'),
-
-  body('genero')
-    .notEmpty().withMessage('El género es obligatorio')
-    .isLength({ min: 1, max: 100 }).withMessage('El género debe tener entre 1 y 100 caracteres'),
-
-  body('anio')
-    .isInt({ min: 1000, max: new Date().getFullYear() + 1 })
-    .withMessage('El año debe ser un número válido'),
-
   body('isbn')
     .notEmpty().withMessage('El ISBN es obligatorio')
     .isLength({ min: 10, max: 20 }).withMessage('El ISBN debe tener entre 10 y 20 caracteres'),
@@ -40,7 +24,12 @@ const libroValidations = [
   body('estado')
     .optional()
     .isIn(['Disponible', 'Prestado', 'En reparación'])
-    .withMessage('El estado debe ser: Disponible, Prestado o En reparación')
+    .withMessage('El estado debe ser: Disponible, Prestado o En reparación'),
+
+  body('imagen_url')
+    .optional({ nullable: true })
+    .isURL({ require_tld: false })
+    .withMessage('La URL de la imagen debe ser válida')
 ];
 
 /* ========================================

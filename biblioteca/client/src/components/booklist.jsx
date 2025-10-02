@@ -1,25 +1,19 @@
-/**
- * Componente BookList - Lista principal de libros con funcionalidades de búsqueda, filtrado y ordenamiento
- * Gestiona el estado de los libros, las búsquedas, filtros y la edición
- */
 import React, { useEffect, useState } from 'react'; // eslint-disable-line no-unused-vars
 import { getLibros, searchLibros } from '../services/api';
 import BookForm from './bookform';
+import BookCard from './bookcard';
 import BookItem from './bookitem';
 
 export default function BookList(){
-  // Estados para gestionar la lista de libros y sus operaciones
-  const [books, setBooks] = useState([]);           // Lista de libros a mostrar
-  const [editing, setEditing] = useState(null);     // Libro en edición (null si no hay edición activa)
-  const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda actual
-  const [sortBy, setSortBy] = useState('id');       // Campo por el cual ordenar
-  const [sortOrder, setSortOrder] = useState('ASC'); // Orden ascendente o descendente
-  const [statusFilter, setStatusFilter] = useState(''); // Filtro por estado del libro
+  const [books, setBooks] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('id');
+  const [sortOrder, setSortOrder] = useState('ASC');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [viewMode, setViewMode] = useState('cards');
 
-  /**
-   * Carga todos los libros desde el servidor
-   * Aplica ordenamiento y filtros según los parámetros actuales
-   */
+  // Carga el catálogo con los parámetros actuales
   const load = async () => {
     try {
       const res = await getLibros(sortBy, sortOrder, statusFilter ? 'estado' : null, statusFilter || null);
@@ -29,10 +23,7 @@ export default function BookList(){
     }
   };
 
-  /**
-   * Busca libros por título
-   * Si el término está vacío, recarga todos los libros
-   */
+  // Busca por título o restablece la lista
   const search = async (term) => {
     try {
       if (term.trim() === '') {
@@ -46,29 +37,19 @@ export default function BookList(){
     }
   };
 
-  /**
-   * Efecto que recarga los libros cuando cambian los criterios de ordenamiento o filtrado
-   */
   useEffect(() => {
     load();
   }, [sortBy, sortOrder, statusFilter]);
 
-  // Funciones callback para actualizar el estado local tras operaciones CRUD
   const created = (libro) => setBooks((prev) => [libro, ...prev]);
   const updated = (libro) => setBooks((prev) => prev.map((item) => (item.id === libro.id ? libro : item)));
   const deleted = (id) => setBooks((prev) => prev.filter((item) => item.id !== id));
 
-  /**
-   * Maneja el envío del formulario de búsqueda
-   */
   const handleSearch = (e) => {
     e.preventDefault();
     search(searchTerm);
   };
 
-  /**
-   * Resetea todos los filtros, búsquedas y ordenamientos a sus valores por defecto
-   */
   const resetAll = () => {
     setSearchTerm('');
     setStatusFilter('');
@@ -92,11 +73,50 @@ export default function BookList(){
             padding: 28
           }}
         >
-          <h3 style={{ margin: '0 0 20px 0', color: 'var(--color-text)', fontSize: '1.15rem', fontWeight: 600 }}>
-            Herramientas de búsqueda y ordenamiento
-          </h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
+            <h3 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1.15rem', fontWeight: 600 }}>
+              Herramientas de búsqueda y ordenamiento
+            </h3>
 
-          {/* Barra de búsqueda y botón de limpiar filtros */}
+            {/* Botones para cambiar vista */}
+            <div style={{ display: 'flex', gap: 8, background: 'rgba(255, 255, 255, 0.5)', borderRadius: 12, padding: 4 }}>
+              <button
+                onClick={() => setViewMode('cards')}
+                style={{
+                  padding: '8px 16px',
+                  background: viewMode === 'cards' ? 'var(--color-primary)' : 'transparent',
+                  color: 'var(--color-text)',
+                  border: 'none',
+                  borderRadius: 8,
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: viewMode === 'cards' ? '0 2px 8px rgba(162, 197, 242, 0.3)' : 'none'
+                }}
+              >
+                🎴 Tarjetas
+              </button>
+              <button
+                onClick={() => setViewMode('table')}
+                style={{
+                  padding: '8px 16px',
+                  background: viewMode === 'table' ? 'var(--color-primary)' : 'transparent',
+                  color: 'var(--color-text)',
+                  border: 'none',
+                  borderRadius: 8,
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: viewMode === 'table' ? '0 2px 8px rgba(162, 197, 242, 0.3)' : 'none'
+                }}
+              >
+                📋 Tabla
+              </button>
+            </div>
+          </div>
+
           <div style={{ display: 'flex', gap: 16, marginBottom: 18, flexWrap: 'wrap' }}>
             <form onSubmit={handleSearch} style={{ display: 'flex', gap: 12, flex: 1, minWidth: 280 }}>
               <input
@@ -148,9 +168,7 @@ export default function BookList(){
             </button>
           </div>
 
-          {/* Controles de ordenamiento y filtrado por estado */}
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            {/* Selectores de ordenamiento */}
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Ordenar por</label>
               <select
@@ -186,7 +204,6 @@ export default function BookList(){
               </select>
             </div>
 
-            {/* Selector de filtro por estado */}
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
               <label style={{ fontWeight: 600, color: 'var(--color-text)', fontSize: '0.9rem' }}>Estado</label>
               <select
@@ -209,35 +226,82 @@ export default function BookList(){
           </div>
         </div>
 
-        {/* Indicador de resultados actuales */}
         <div className="card-surface" style={{ padding: 18, background: 'rgba(254, 252, 239, 0.85)' }}>
           <span style={{ color: 'var(--color-text)', fontSize: '0.95rem', fontWeight: 500 }}>
             Mostrando <strong>{books.length}</strong> libro{books.length !== 1 ? 's' : ''}
             {sortBy !== 'id' || sortOrder !== 'ASC' ? ` • Ordenado por ${sortBy} (${sortOrder})` : ''}
             {statusFilter ? ` • Estado: ${statusFilter}` : ''}
+            {' • Vista: '}<strong>{viewMode === 'cards' ? 'Tarjetas' : 'Tabla'}</strong>
           </span>
         </div>
 
-        {/* Tabla de libros */}
-        <div style={{ borderRadius: 18, overflow: 'hidden', boxShadow: 'var(--shadow-soft)' }}>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Año</th>
-                <th>Estado</th>
-                <th style={{ textAlign: 'center' }}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
+        {viewMode === 'cards' ? (
+          <>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: 24,
+                padding: '8px 0'
+              }}
+            >
               {books.map((book) => (
-                <BookItem key={book.id} book={book} onEdit={(item) => setEditing(item)} onDeleted={deleted} />
+                <BookCard key={book.id} book={book} onEdit={(item) => setEditing(item)} onDeleted={deleted} />
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+
+            {books.length === 0 && (
+              <div
+                className="card-surface"
+                style={{
+                  padding: 48,
+                  textAlign: 'center',
+                  background: 'linear-gradient(135deg, rgba(162, 197, 242, 0.15), rgba(254, 219, 214, 0.15))'
+                }}
+              >
+                <div style={{ fontSize: '3rem', marginBottom: 16 }}>📚</div>
+                <h3 style={{ margin: '0 0 8px 0', color: 'var(--color-text)', fontSize: '1.2rem' }}>
+                  No se encontraron libros
+                </h3>
+                <p style={{ margin: 0, color: 'var(--color-text)', opacity: 0.7 }}>
+                  Intenta ajustar los filtros o agregar nuevos libros
+                </p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ borderRadius: 18, overflow: 'hidden', boxShadow: 'var(--shadow-soft)' }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Título</th>
+                  <th>Autor</th>
+                  <th>Año</th>
+                  <th>Estado</th>
+                  <th style={{ textAlign: 'center' }}>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {books.map((book) => (
+                  <BookItem key={book.id} book={book} onEdit={(item) => setEditing(item)} onDeleted={deleted} />
+                ))}
+              </tbody>
+            </table>
+
+            {books.length === 0 && (
+              <div style={{ padding: 48, textAlign: 'center', background: 'var(--color-card)' }}>
+                <div style={{ fontSize: '3rem', marginBottom: 16 }}>📚</div>
+                <h3 style={{ margin: '0 0 8px 0', color: 'var(--color-text)', fontSize: '1.2rem' }}>
+                  No se encontraron libros
+                </h3>
+                <p style={{ margin: 0, color: 'var(--color-text)', opacity: 0.7 }}>
+                  Intenta ajustar los filtros o agregar nuevos libros
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </div>
   );
