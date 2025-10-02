@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import BookList from './components/booklist';
 
 export default function App(){
-  // Preferencia almacenada del modo oscuro
   const [darkMode, setDarkMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('darkMode') === 'true';
@@ -13,7 +13,6 @@ export default function App(){
     }
   }, []);
 
-  // Alterna el tema y lo guarda
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -26,38 +25,51 @@ export default function App(){
     }
   };
 
-  const badgeStyle = {
-    backgroundColor: darkMode ? 'rgba(139, 180, 232, 0.25)' : 'rgba(162, 197, 242, 0.3)',
-    color: darkMode ? '#f4f4f4' : '#5b5b5b'
-  };
-
-  const textStyle = {
-    margin: 0,
-    fontSize: '1rem',
-    color: darkMode ? '#e8e8e8' : '#5b5b5b'
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
     <>
-      <button
-        className="dark-mode-toggle"
-        onClick={toggleDarkMode}
-        aria-label="Toggle dark mode"
-        title={darkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-      >
-        {darkMode ? '☀️' : '🌙'}
-      </button>
+      {/* Corner Menu */}
+      <div className="corner-menu">
+        <button
+          className="corner-menu-toggle"
+          onClick={toggleMenu}
+          aria-label="Menu"
+        >
+          <span className={`hamburger ${menuOpen ? 'active' : ''}`}></span>
+        </button>
+        
+        <div className={`corner-menu-content ${menuOpen ? 'open' : ''}`}>
+          <button
+            className="corner-menu-item"
+            onClick={toggleDarkMode}
+            title={darkMode ? 'Modo claro' : 'Modo oscuro'}
+          >
+            {darkMode ? '☀' : '☽'}
+            <span>{darkMode ? 'Claro' : 'Oscuro'}</span>
+          </button>
+          <button className="corner-menu-item" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            ↑
+            <span>Arriba</span>
+          </button>
+          <button className="corner-menu-item" onClick={() => setMenuOpen(false)}>
+            ×
+            <span>Cerrar</span>
+          </button>
+        </div>
+      </div>
 
       <div className="app-container">
         <div className="page-shell">
-          <header className="hero-header card-surface" style={{ textAlign: 'center', padding: 32 }}>
-            <span className="badge" style={badgeStyle}>
-              📚 Catálogo interactivo
-            </span>
-            <h1 style={{ marginTop: 16, marginBottom: 8, fontSize: '2.5rem' }}>Biblioteca Digital</h1>
-            <p style={textStyle}>
-              Gestiona tu colección con búsquedas instantáneas, filtros dinámicos y un panel de edición amigable.
-            </p>
+          <header className="main-header">
+            <div className="header-content">
+              <h1 className="header-title">Biblioteca Digital</h1>
+              <p className="header-subtitle">
+                Gestión moderna de catálogos bibliográficos
+              </p>
+            </div>
           </header>
 
           <BookList/>

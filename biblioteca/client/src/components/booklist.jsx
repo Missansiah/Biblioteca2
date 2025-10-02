@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; // eslint-disable-line no-unused-vars
+import React, { useEffect, useState } from 'react';
 import { getLibros, searchLibros } from '../services/api';
 import BookForm from './bookform';
 import BookCard from './bookcard';
@@ -13,17 +13,17 @@ export default function BookList(){
   const [statusFilter, setStatusFilter] = useState('');
   const [viewMode, setViewMode] = useState('cards');
 
-  // Carga el catálogo con los parámetros actuales
+  // Cargar libros con filtros aplicados
   const load = async () => {
     try {
       const res = await getLibros(sortBy, sortOrder, statusFilter ? 'estado' : null, statusFilter || null);
       setBooks(res.data);
     } catch (err) {
-      console.error(err);
+      console.error('Error cargando libros:', err);
     }
   };
 
-  // Busca por título o restablece la lista
+  // Buscar libros por título
   const search = async (term) => {
     try {
       if (term.trim() === '') {
@@ -33,7 +33,7 @@ export default function BookList(){
       const res = await searchLibros(term);
       setBooks(res.data);
     } catch (err) {
-      console.error(err);
+      console.error('Error en búsqueda:', err);
     }
   };
 
@@ -41,6 +41,7 @@ export default function BookList(){
     load();
   }, [sortBy, sortOrder, statusFilter]);
 
+  // Handlers para operaciones CRUD
   const created = (libro) => setBooks((prev) => [libro, ...prev]);
   const updated = (libro) => setBooks((prev) => prev.map((item) => (item.id === libro.id ? libro : item)));
   const deleted = (id) => setBooks((prev) => prev.filter((item) => item.id !== id));
@@ -60,11 +61,9 @@ export default function BookList(){
 
   return (
     <div className="card-surface" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 28 }}>
-      {/* Formulario para crear o editar libros */}
       <BookForm editing={editing} onCreated={created} onUpdated={updated} onCancel={() => setEditing(null)} />
 
       <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {/* Panel de herramientas de búsqueda y filtrado */}
         <div
           className="card-surface"
           style={{
@@ -75,10 +74,9 @@ export default function BookList(){
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
             <h3 style={{ margin: 0, color: 'var(--color-text)', fontSize: '1.15rem', fontWeight: 600 }}>
-              Herramientas de búsqueda y ordenamiento
+              Controles de búsqueda y filtrado
             </h3>
 
-            {/* Botones para cambiar vista */}
             <div style={{ display: 'flex', gap: 8, background: 'rgba(255, 255, 255, 0.5)', borderRadius: 12, padding: 4 }}>
               <button
                 onClick={() => setViewMode('cards')}
@@ -95,7 +93,7 @@ export default function BookList(){
                   boxShadow: viewMode === 'cards' ? '0 2px 8px rgba(162, 197, 242, 0.3)' : 'none'
                 }}
               >
-                🎴 Tarjetas
+                ◇ Tarjetas
               </button>
               <button
                 onClick={() => setViewMode('table')}
@@ -112,7 +110,7 @@ export default function BookList(){
                   boxShadow: viewMode === 'table' ? '0 2px 8px rgba(162, 197, 242, 0.3)' : 'none'
                 }}
               >
-                📋 Tabla
+                ☰ Tabla
               </button>
             </div>
           </div>
@@ -259,7 +257,7 @@ export default function BookList(){
                   background: 'linear-gradient(135deg, rgba(162, 197, 242, 0.15), rgba(254, 219, 214, 0.15))'
                 }}
               >
-                <div style={{ fontSize: '3rem', marginBottom: 16 }}>📚</div>
+                <div style={{ fontSize: '3rem', marginBottom: 16 }}>◊</div>
                 <h3 style={{ margin: '0 0 8px 0', color: 'var(--color-text)', fontSize: '1.2rem' }}>
                   No se encontraron libros
                 </h3>
@@ -291,7 +289,7 @@ export default function BookList(){
 
             {books.length === 0 && (
               <div style={{ padding: 48, textAlign: 'center', background: 'var(--color-card)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 16 }}>📚</div>
+                <div style={{ fontSize: '3rem', marginBottom: 16 }}>◊</div>
                 <h3 style={{ margin: '0 0 8px 0', color: 'var(--color-text)', fontSize: '1.2rem' }}>
                   No se encontraron libros
                 </h3>
